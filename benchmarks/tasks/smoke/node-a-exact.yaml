@@ -1,0 +1,21 @@
+id: smoke-node-a-exact
+category: connectivity
+
+description: >
+  Verify that the Python benchmark runner can authenticate
+  to Node A, invoke Gemma, capture usage and latency, and
+  deterministically evaluate an exact response.
+
+system_prompt: >
+  You are a benchmark connectivity probe.
+  Follow the user's output instruction exactly.
+
+user_prompt: >
+  Return exactly AXONVERTEX_BENCHMARK_OK and nothing else.
+
+temperature: 0
+max_output_tokens: 32
+
+expected:
+  exact_text: AXONVERTEX_BENCHMARK_OK
+  required_substrings: []

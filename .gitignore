@@ -34,3 +34,7 @@ logs/
 # OS / IDE
 .DS_Store
 Thumbs.db
+
+# Python packaging metadata
+*.egg-info/
+*.egg-info
