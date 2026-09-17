@@ -28,7 +28,7 @@ from .long_context_matrix import (
 from .token_counter import TokenCounter
 
 
-PROFILE_NAME = "32k"
+DEFAULT_PROFILE_NAME = "32k"
 TOLERANCE_TOKENS = 128
 MAX_OUTPUT_TOKENS = 512
 
@@ -93,11 +93,12 @@ def execute_scenario(
     scenario: ReasoningScenario,
     counter: TokenCounter,
     client: OpenAICompatibleClient,
+    profile_name: str = DEFAULT_PROFILE_NAME,
 ) -> dict[str, Any]:
     endpoint = gemma_endpoint()
 
     profile = load_context_profiles()[
-        PROFILE_NAME
+        profile_name
     ]
 
     generated = generate_scenario_context(
@@ -168,6 +169,36 @@ def execute_scenario(
 
     actual_prompt_tokens = usage.get(
         "prompt_tokens"
+    )
+
+    completion_tokens = usage.get(
+        "completion_tokens"
+    )
+
+    total_tokens = usage.get(
+        "total_tokens"
+    )
+
+    prompt_details = (
+        usage.get("prompt_tokens_details")
+        or {}
+    )
+
+    completion_details = (
+        usage.get("completion_tokens_details")
+        or {}
+    )
+
+    cached_tokens = (
+        prompt_details.get("cached_tokens")
+        if isinstance(prompt_details, dict)
+        else None
+    )
+
+    reasoning_tokens = (
+        completion_details.get("reasoning_tokens")
+        if isinstance(completion_details, dict)
+        else None
     )
 
     parsed = None
@@ -352,13 +383,31 @@ def execute_scenario(
             else "FAIL",
 
         "profile":
-            PROFILE_NAME,
+            profile_name,
 
         "target_prompt_tokens":
             profile.target_prompt_tokens,
 
         "actual_prompt_tokens":
             actual_prompt_tokens,
+
+        "completion_tokens":
+            completion_tokens,
+
+        "total_tokens":
+            total_tokens,
+
+        "cached_tokens":
+            cached_tokens,
+
+        "reasoning_tokens":
+            reasoning_tokens,
+
+        "reasoning_effort":
+            "default",
+
+        "cold_cache":
+            True,
 
         "prompt_token_delta":
             (
@@ -454,7 +503,20 @@ def main() -> None:
         default=list(SCENARIOS),
     )
 
+    parser.add_argument(
+        "--profile",
+        choices=[
+            "32k",
+            "64k",
+            "96k",
+            "128k",
+        ],
+        default=DEFAULT_PROFILE_NAME,
+    )
+
     args = parser.parse_args()
+
+    selected_profile = args.profile
 
     selected_scenarios = [
         SCENARIOS[name]
@@ -471,11 +533,17 @@ def main() -> None:
         .strftime("%Y%m%dT%H%M%SZ")
     )
 
+    result_namespace = (
+        "checkpoint2b"
+        if selected_profile == "32k"
+        else "checkpoint2c-probes"
+    )
+
     result_dir = (
         PROJECT_ROOT
         / "benchmarks"
         / "results"
-        / "checkpoint2b"
+        / result_namespace
         / timestamp
     )
 
@@ -494,7 +562,8 @@ def main() -> None:
             " AXONVERTEX Secure Agent Studio"
         )
         print(
-            " Checkpoint 2B — 32K Reasoning Suite v1"
+            f" Distributed Evidence Reasoning Suite — "
+            f"{selected_profile.upper()}"
         )
         print(
             "========================================================"
@@ -519,6 +588,7 @@ def main() -> None:
                 scenario=scenario,
                 counter=counter,
                 client=client,
+                profile_name=selected_profile,
             )
 
             results.append(result)
@@ -597,7 +667,7 @@ def main() -> None:
                 "distributed-reasoning-suite.v1",
 
             "profile":
-                PROFILE_NAME,
+                selected_profile,
 
             "total_scenarios":
                 len(results),

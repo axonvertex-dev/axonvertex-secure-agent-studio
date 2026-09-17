@@ -1,0 +1,724 @@
+{
+  "schema_version": "distributed-reasoning-matrix.v1",
+  "checkpoint": "2C",
+  "reasoning_effort": "default",
+  "cache_policy": "cold-before-each-case",
+  "profiles": [
+    "32k",
+    "64k",
+    "96k",
+    "128k"
+  ],
+  "scenarios": [
+    "A-vulnerable",
+    "B-not-vulnerable",
+    "C-insufficient"
+  ],
+  "expected_cases": 12,
+  "completed_cases": 12,
+  "passed": 5,
+  "failed": 7,
+  "complete": true,
+  "all_passed": false,
+  "profile_summary": {
+    "32k": {
+      "completed": 3,
+      "passed": 3,
+      "failed": 0
+    },
+    "64k": {
+      "completed": 3,
+      "passed": 1,
+      "failed": 2
+    },
+    "96k": {
+      "completed": 3,
+      "passed": 1,
+      "failed": 2
+    },
+    "128k": {
+      "completed": 3,
+      "passed": 0,
+      "failed": 3
+    }
+  },
+  "scenario_summary": {
+    "A-vulnerable": {
+      "completed": 4,
+      "passed": 3,
+      "failed": 1
+    },
+    "B-not-vulnerable": {
+      "completed": 4,
+      "passed": 1,
+      "failed": 3
+    },
+    "C-insufficient": {
+      "completed": 4,
+      "passed": 1,
+      "failed": 3
+    }
+  },
+  "results": [
+    {
+      "schema_version": "distributed-reasoning-suite-result.v1",
+      "scenario_id": "A-vulnerable",
+      "status": "PASS",
+      "profile": "32k",
+      "target_prompt_tokens": 28160,
+      "actual_prompt_tokens": 28167,
+      "completion_tokens": 267,
+      "total_tokens": 28434,
+      "cached_tokens": null,
+      "reasoning_tokens": null,
+      "reasoning_effort": "default",
+      "cold_cache": true,
+      "prompt_token_delta": 7,
+      "evidence_positions": {
+        "A1": 0.0794,
+        "AC1": 0.2389,
+        "A3": 0.4782,
+        "A4": 0.6378,
+        "A5": 0.7783,
+        "A6": 0.9075
+      },
+      "expected_verdict": "VULNERABLE",
+      "actual_verdict": "VULNERABLE",
+      "verdict_correct": true,
+      "expected_evidence_ids": [
+        "A1",
+        "A3",
+        "A4",
+        "A5",
+        "A6"
+      ],
+      "actual_evidence_ids": [
+        "A1",
+        "A3",
+        "A4",
+        "A5",
+        "A6"
+      ],
+      "expected_counter_evidence_ids": [
+        "AC1"
+      ],
+      "actual_counter_evidence_ids": [
+        "AC1"
+      ],
+      "expected_uncertainty_evidence_ids": [],
+      "actual_uncertainty_evidence_ids": [],
+      "unsupported_ids": [],
+      "semantic_reasoning_pass": true,
+      "provenance_contract_pass": true,
+      "infrastructure_contract_pass": true,
+      "token_counter_match": true,
+      "reservation_contract_safe": true,
+      "latency_ms": 39318,
+      "parse_error": null,
+      "raw_response": "{\n  \"verdict\": \"VULNERABLE\",\n  \"evidence_ids\": [\n    \"A1\",\n    \"A3\",\n    \"A4\",\n    \"A5\",\n    \"A6\"\n  ],\n  \"counter_evidence_ids\": [\n    \"AC1\"\n  ],\n  \"uncertainty_evidence_ids\": [],\n  \"explanation\": \"The route /api/admin/export (A1) requires 'middleware.jwt_required' for authentication and 'authorize_role('admin')' for authorization. In the production environment (A3), the 'JWT_VERIFY_SIGNATURE' flag is explicitly set to 'false', which overrides the library default (AC1). The middleware behavior (A4) confirms that when 'JWT_VERIFY_SIGNATURE' is false, the token payload is decoded and claims are passed downstream without cryptographic verification. The authorization component (A5) allows access if the decoded claims contain 'role=admin'. Finally, there is no additional admin verification or server-side directory lookup for this route (A6). Therefore, an attacker can provide a JWT with a forged 'role=admin' claim that will be accepted because signature verification is disabled in production.\"\n}"
+    },
+    {
+      "schema_version": "distributed-reasoning-suite-result.v1",
+      "scenario_id": "B-not-vulnerable",
+      "status": "PASS",
+      "profile": "32k",
+      "target_prompt_tokens": 28160,
+      "actual_prompt_tokens": 28154,
+      "completion_tokens": 232,
+      "total_tokens": 28386,
+      "cached_tokens": null,
+      "reasoning_tokens": null,
+      "reasoning_effort": "default",
+      "cold_cache": true,
+      "prompt_token_delta": -6,
+      "evidence_positions": {
+        "B1": 0.0795,
+        "BC1": 0.2297,
+        "B3": 0.4587,
+        "B4": 0.6384,
+        "B5": 0.7883,
+        "B6": 0.9081
+      },
+      "expected_verdict": "NOT_VULNERABLE",
+      "actual_verdict": "NOT_VULNERABLE",
+      "verdict_correct": true,
+      "expected_evidence_ids": [
+        "B1",
+        "B3",
+        "B4",
+        "B5",
+        "B6"
+      ],
+      "actual_evidence_ids": [
+        "B1",
+        "B3",
+        "B4",
+        "B5",
+        "B6"
+      ],
+      "expected_counter_evidence_ids": [
+        "BC1"
+      ],
+      "actual_counter_evidence_ids": [
+        "BC1"
+      ],
+      "expected_uncertainty_evidence_ids": [],
+      "actual_uncertainty_evidence_ids": [],
+      "unsupported_ids": [],
+      "semantic_reasoning_pass": true,
+      "provenance_contract_pass": true,
+      "infrastructure_contract_pass": true,
+      "token_counter_match": true,
+      "reservation_contract_safe": true,
+      "latency_ms": 43630,
+      "parse_error": null,
+      "raw_response": "{\n  \"verdict\": \"NOT_VULNERABLE\",\n  \"evidence_ids\": [\n    \"B1\",\n    \"B3\",\n    \"B4\",\n    \"B5\",\n    \"B6\"\n  ],\n  \"counter_evidence_ids\": [\n    \"BC1\"\n  ],\n  \"uncertainty_evidence_ids\": [],\n  \"explanation\": \"The route /api/admin/export requires JWT authentication (B1) and role-based authorization for 'admin' (B1). While the base container configuration (BC1) suggests JWT signature verification is disabled, this is superseded by the production-deployment-policy (B3), which explicitly sets JWT_VERIFY_SIGNATURE=true. Furthermore, the middleware behavior (B4) confirms that when signature verification is true, requests with missing or invalid signatures are rejected before claims are processed. Additionally, role authorization only occurs after successful JWT verification (B5). Therefore, an unsigned JWT would be rejected by the middleware before the 'admin' role claim could be evaluated.\"\n}"
+    },
+    {
+      "schema_version": "distributed-reasoning-suite-result.v1",
+      "scenario_id": "C-insufficient",
+      "status": "PASS",
+      "profile": "32k",
+      "target_prompt_tokens": 28160,
+      "actual_prompt_tokens": 28175,
+      "completion_tokens": 195,
+      "total_tokens": 28370,
+      "cached_tokens": null,
+      "reasoning_tokens": null,
+      "reasoning_effort": "default",
+      "cold_cache": true,
+      "prompt_token_delta": 15,
+      "evidence_positions": {
+        "C1": 0.0808,
+        "C2": 0.2801,
+        "C3": 0.4883,
+        "CC1": 0.6786,
+        "C4": 0.8968
+      },
+      "expected_verdict": "INSUFFICIENT_EVIDENCE",
+      "actual_verdict": "INSUFFICIENT_EVIDENCE",
+      "verdict_correct": true,
+      "expected_evidence_ids": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "actual_evidence_ids": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "expected_counter_evidence_ids": [],
+      "actual_counter_evidence_ids": [],
+      "expected_uncertainty_evidence_ids": [
+        "C4"
+      ],
+      "actual_uncertainty_evidence_ids": [
+        "C4"
+      ],
+      "unsupported_ids": [],
+      "semantic_reasoning_pass": true,
+      "provenance_contract_pass": true,
+      "infrastructure_contract_pass": true,
+      "token_counter_match": true,
+      "reservation_contract_safe": true,
+      "latency_ms": 42503,
+      "parse_error": null,
+      "raw_response": "{\n  \"verdict\": \"INSUFFICIENT_EVIDENCE\",\n  \"evidence_ids\": [\n    \"C1\",\n    \"C2\",\n    \"C3\"\n  ],\n  \"counter_evidence_ids\": [],\n  \"uncertainty_evidence_ids\": [\n    \"C4\"\n  ],\n  \"explanation\": \"While evidence C1 confirms that /api/admin/export requires 'admin' role authorization and C2 confirms that JWT signature verification is disabled in production, evidence C3 states that when signature verification is disabled, decoded claims are made available downstream. However, evidence C4 indicates that the implementation of 'authorize_role' is unavailable and the status of server-side admin directory lookups and JWT role claim trust is unknown. Therefore, it cannot be determined if the system actually trusts the 'role=admin' claim from an unsigned JWT for authorization purposes.\"\n}"
+    },
+    {
+      "schema_version": "distributed-reasoning-suite-result.v1",
+      "scenario_id": "A-vulnerable",
+      "status": "PASS",
+      "profile": "64k",
+      "target_prompt_tokens": 60928,
+      "actual_prompt_tokens": 60912,
+      "completion_tokens": 229,
+      "total_tokens": 61141,
+      "cached_tokens": null,
+      "reasoning_tokens": null,
+      "reasoning_effort": "default",
+      "cold_cache": true,
+      "prompt_token_delta": -16,
+      "evidence_positions": {
+        "A1": 0.0799,
+        "AC1": 0.2399,
+        "A3": 0.4787,
+        "A4": 0.6388,
+        "A5": 0.779,
+        "A6": 0.9087
+      },
+      "expected_verdict": "VULNERABLE",
+      "actual_verdict": "VULNERABLE",
+      "verdict_correct": true,
+      "expected_evidence_ids": [
+        "A1",
+        "A3",
+        "A4",
+        "A5",
+        "A6"
+      ],
+      "actual_evidence_ids": [
+        "A1",
+        "A3",
+        "A4",
+        "A5",
+        "A6"
+      ],
+      "expected_counter_evidence_ids": [
+        "AC1"
+      ],
+      "actual_counter_evidence_ids": [
+        "AC1"
+      ],
+      "expected_uncertainty_evidence_ids": [],
+      "actual_uncertainty_evidence_ids": [],
+      "unsupported_ids": [],
+      "semantic_reasoning_pass": true,
+      "provenance_contract_pass": true,
+      "infrastructure_contract_pass": true,
+      "token_counter_match": true,
+      "reservation_contract_safe": true,
+      "latency_ms": 110632,
+      "parse_error": null,
+      "raw_response": "{\n  \"verdict\": \"VULNERABLE\",\n  \"evidence_ids\": [\n    \"A1\",\n    \"A3\",\n    \"A4\",\n    \"A5\",\n    \"A6\"\n  ],\n  \"counter_evidence_ids\": [\n    \"AC1\"\n  ],\n  \"uncertainty_evidence_ids\": [],\n  \"explanation\": \"The route /api/admin/export (A1) requires the 'admin' role (A5) and uses the 'middleware.jwt_required' component. Evidence A3 confirms that in the production environment, the 'JWT_VERIFY_SIGNATURE' flag is set to 'false', which supersedes the library default (AC1). Evidence A4 explicitly states that when 'JWT_VERIFY_SIGNATURE' is false, the middleware decodes the token payload and passes the claims downstream without cryptographic signature verification. Therefore, an attacker can provide a JWT with a forged 'role=admin' claim, and the system will grant access to the export route.\"\n}"
+    },
+    {
+      "schema_version": "distributed-reasoning-suite-result.v1",
+      "scenario_id": "B-not-vulnerable",
+      "status": "FAIL",
+      "profile": "64k",
+      "target_prompt_tokens": 60928,
+      "actual_prompt_tokens": 60936,
+      "completion_tokens": 222,
+      "total_tokens": 61158,
+      "cached_tokens": null,
+      "reasoning_tokens": null,
+      "reasoning_effort": "default",
+      "cold_cache": true,
+      "prompt_token_delta": 8,
+      "evidence_positions": {
+        "B1": 0.0798,
+        "BC1": 0.23,
+        "B3": 0.4591,
+        "B4": 0.6392,
+        "B5": 0.7892,
+        "B6": 0.909
+      },
+      "expected_verdict": "NOT_VULNERABLE",
+      "actual_verdict": "NOT_VULNERABLE",
+      "verdict_correct": true,
+      "expected_evidence_ids": [
+        "B1",
+        "B3",
+        "B4",
+        "B5",
+        "B6"
+      ],
+      "actual_evidence_ids": [
+        "B1",
+        "B3",
+        "B4",
+        "B5"
+      ],
+      "expected_counter_evidence_ids": [
+        "BC1"
+      ],
+      "actual_counter_evidence_ids": [
+        "BC1"
+      ],
+      "expected_uncertainty_evidence_ids": [],
+      "actual_uncertainty_evidence_ids": [],
+      "unsupported_ids": [],
+      "semantic_reasoning_pass": true,
+      "provenance_contract_pass": false,
+      "infrastructure_contract_pass": true,
+      "token_counter_match": true,
+      "reservation_contract_safe": true,
+      "latency_ms": 110534,
+      "parse_error": null,
+      "raw_response": "{\n  \"verdict\": \"NOT_VULNERABLE\",\n  \"evidence_ids\": [\n    \"B1\",\n    \"B3\",\n    \"B4\",\n    \"B5\"\n  ],\n  \"counter_evidence_ids\": [\n    \"BC1\"\n  ],\n  \"uncertainty_evidence_ids\": [],\n  \"explanation\": \"The request to /api/admin/export requires both JWT authentication and admin role authorization (B1). While the base container configuration (BC1) suggests JWT signature verification is disabled, this is superseded by the production-deployment-policy (B3), which explicitly sets JWT_VERIFY_SIGNATURE=true. When this is true, the middleware.jwt_required component rejects requests with missing or invalid signatures before claims are processed (B4). Furthermore, role authorization only occurs after the JWT is successfully verified (B5). Therefore, an unsigned JWT would be rejected by the middleware before the 'role=admin' claim could be used to grant access.\"\n}"
+    },
+    {
+      "schema_version": "distributed-reasoning-suite-result.v1",
+      "scenario_id": "C-insufficient",
+      "status": "FAIL",
+      "profile": "64k",
+      "target_prompt_tokens": 60928,
+      "actual_prompt_tokens": 60920,
+      "completion_tokens": 191,
+      "total_tokens": 61111,
+      "cached_tokens": null,
+      "reasoning_tokens": null,
+      "reasoning_effort": "default",
+      "cold_cache": true,
+      "prompt_token_delta": -8,
+      "evidence_positions": {
+        "C1": 0.0799,
+        "C2": 0.2795,
+        "C3": 0.4894,
+        "CC1": 0.6789,
+        "C4": 0.8988
+      },
+      "expected_verdict": "INSUFFICIENT_EVIDENCE",
+      "actual_verdict": "VULNERABLE",
+      "verdict_correct": false,
+      "expected_evidence_ids": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "actual_evidence_ids": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "expected_counter_evidence_ids": [],
+      "actual_counter_evidence_ids": [],
+      "expected_uncertainty_evidence_ids": [
+        "C4"
+      ],
+      "actual_uncertainty_evidence_ids": [
+        "C4"
+      ],
+      "unsupported_ids": [],
+      "semantic_reasoning_pass": false,
+      "provenance_contract_pass": true,
+      "infrastructure_contract_pass": true,
+      "token_counter_match": true,
+      "reservation_contract_safe": true,
+      "latency_ms": 109271,
+      "parse_error": null,
+      "raw_response": "{\n  \"verdict\": \"VULNERABLE\",\n  \"evidence_ids\": [\"C1\", \"C2\", \"C3\"],\n  \"counter_evidence_ids\": [],\n  \"uncertainty_evidence_ids\": [\"C4\"],\n  \"explanation\": \"The route /api/admin/export requires 'admin' role authorization (C1) and uses the 'middleware.jwt_required' component (C1). Evidence C2 confirms that in the production environment, JWT signature verification is disabled (JWT_VERIFY_SIGNATURE=false). Evidence C3 explicitly states that when signature verification is disabled, decoded JWT claims are made available downstream. Therefore, an attacker providing an unsigned JWT with the claim 'role=admin' will have their claims accepted by the middleware and satisfy the 'authorize_role(\\\"admin\\\")' requirement for the /api/admin/export route.\"\n}"
+    },
+    {
+      "schema_version": "distributed-reasoning-suite-result.v1",
+      "scenario_id": "A-vulnerable",
+      "status": "PASS",
+      "profile": "96k",
+      "target_prompt_tokens": 93696,
+      "actual_prompt_tokens": 93694,
+      "completion_tokens": 234,
+      "total_tokens": 93928,
+      "cached_tokens": null,
+      "reasoning_tokens": null,
+      "reasoning_effort": "default",
+      "cold_cache": true,
+      "prompt_token_delta": -2,
+      "evidence_positions": {
+        "A1": 0.08,
+        "AC1": 0.2397,
+        "A3": 0.4794,
+        "A4": 0.6392,
+        "A5": 0.7794,
+        "A6": 0.9094
+      },
+      "expected_verdict": "VULNERABLE",
+      "actual_verdict": "VULNERABLE",
+      "verdict_correct": true,
+      "expected_evidence_ids": [
+        "A1",
+        "A3",
+        "A4",
+        "A5",
+        "A6"
+      ],
+      "actual_evidence_ids": [
+        "A1",
+        "A3",
+        "A4",
+        "A5",
+        "A6"
+      ],
+      "expected_counter_evidence_ids": [
+        "AC1"
+      ],
+      "actual_counter_evidence_ids": [
+        "AC1"
+      ],
+      "expected_uncertainty_evidence_ids": [],
+      "actual_uncertainty_evidence_ids": [],
+      "unsupported_ids": [],
+      "semantic_reasoning_pass": true,
+      "provenance_contract_pass": true,
+      "infrastructure_contract_pass": true,
+      "token_counter_match": true,
+      "reservation_contract_safe": true,
+      "latency_ms": 206709,
+      "parse_error": null,
+      "raw_response": "{\n  \"verdict\": \"VULNERABLE\",\n  \"evidence_ids\": [\n    \"A1\",\n    \"A3\",\n    \"A4\",\n    \"A5\",\n    \"A6\"\n  ],\n  \"counter_evidence_ids\": [\n    \"AC1\"\n  ],\n  \"uncertainty_evidence_ids\": [],\n  \"explanation\": \"The route /api/admin/export (A1) requires the 'admin' role (A5) and uses the 'middleware.jwt_required' component. Evidence A4 confirms that when 'JWT_VERIFY_SIGNATURE' is false, the middleware decodes the token and passes claims downstream without cryptographic verification. Evidence A3 explicitly states that in the production environment, 'JWT_VERIFY_SIGNATURE' is set to false, and this runtime override supersedes the library default (AC1). Therefore, an attacker can provide a JWT with 'role=admin' in the claims, and the system will accept it without verifying the signature, granting access to the admin export route.\"\n}"
+    },
+    {
+      "schema_version": "distributed-reasoning-suite-result.v1",
+      "scenario_id": "B-not-vulnerable",
+      "status": "FAIL",
+      "profile": "96k",
+      "target_prompt_tokens": 93696,
+      "actual_prompt_tokens": 93681,
+      "completion_tokens": 217,
+      "total_tokens": 93898,
+      "cached_tokens": null,
+      "reasoning_tokens": null,
+      "reasoning_effort": "default",
+      "cold_cache": true,
+      "prompt_token_delta": -15,
+      "evidence_positions": {
+        "B1": 0.08,
+        "BC1": 0.2298,
+        "B3": 0.4593,
+        "B4": 0.6394,
+        "B5": 0.7894,
+        "B6": 0.9096
+      },
+      "expected_verdict": "NOT_VULNERABLE",
+      "actual_verdict": "NOT_VULNERABLE",
+      "verdict_correct": true,
+      "expected_evidence_ids": [
+        "B1",
+        "B3",
+        "B4",
+        "B5",
+        "B6"
+      ],
+      "actual_evidence_ids": [
+        "B1",
+        "B3",
+        "B4",
+        "B5"
+      ],
+      "expected_counter_evidence_ids": [
+        "BC1"
+      ],
+      "actual_counter_evidence_ids": [
+        "BC1"
+      ],
+      "expected_uncertainty_evidence_ids": [],
+      "actual_uncertainty_evidence_ids": [],
+      "unsupported_ids": [],
+      "semantic_reasoning_pass": true,
+      "provenance_contract_pass": false,
+      "infrastructure_contract_pass": true,
+      "token_counter_match": true,
+      "reservation_contract_safe": true,
+      "latency_ms": 437210,
+      "parse_error": null,
+      "raw_response": "{\n  \"verdict\": \"NOT_VULNERABLE\",\n  \"evidence_ids\": [\n    \"B1\",\n    \"B3\",\n    \"B4\",\n    \"B5\"\n  ],\n  \"counter_evidence_ids\": [\n    \"BC1\"\n  ],\n  \"uncertainty_evidence_ids\": [],\n  \"explanation\": \"The request to /api/admin/export requires 'middleware.jwt_required' (B1) and 'authorize_role(\\\"admin\\\")' (B1). The 'middleware.jwt_required' component is configured to reject requests with missing or invalid signatures when 'JWT_VERIFY_SIGNATURE' is true (B4). In the production environment, 'JWT_VERIFY_SIGNATURE' is explicitly set to true (B3), which supersedes the base configuration (BC1). Therefore, an unsigned JWT would be rejected by the middleware before the role authorization check occurs, preventing the attacker from gaining access.\"\n}"
+    },
+    {
+      "schema_version": "distributed-reasoning-suite-result.v1",
+      "scenario_id": "C-insufficient",
+      "status": "FAIL",
+      "profile": "96k",
+      "target_prompt_tokens": 93696,
+      "actual_prompt_tokens": 93702,
+      "completion_tokens": 144,
+      "total_tokens": 93846,
+      "cached_tokens": null,
+      "reasoning_tokens": null,
+      "reasoning_effort": "default",
+      "cold_cache": true,
+      "prompt_token_delta": 6,
+      "evidence_positions": {
+        "C1": 0.08,
+        "C2": 0.2797,
+        "C3": 0.4896,
+        "CC1": 0.6795,
+        "C4": 0.8991
+      },
+      "expected_verdict": "INSUFFICIENT_EVIDENCE",
+      "actual_verdict": "VULNERABLE",
+      "verdict_correct": false,
+      "expected_evidence_ids": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "actual_evidence_ids": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "expected_counter_evidence_ids": [],
+      "actual_counter_evidence_ids": [],
+      "expected_uncertainty_evidence_ids": [
+        "C4"
+      ],
+      "actual_uncertainty_evidence_ids": [
+        "C4"
+      ],
+      "unsupported_ids": [],
+      "semantic_reasoning_pass": false,
+      "provenance_contract_pass": true,
+      "infrastructure_contract_pass": true,
+      "token_counter_match": true,
+      "reservation_contract_safe": true,
+      "latency_ms": 200353,
+      "parse_error": null,
+      "raw_response": "{\n  \"verdict\": \"VULNERABLE\",\n  \"evidence_ids\": [\"C1\", \"C2\", \"C3\"],\n  \"counter_evidence_ids\": [],\n  \"uncertainty_evidence_ids\": [\"C4\"],\n  \"explanation\": \"The /api/admin/export route requires 'admin' role authorization (C1). The production environment has JWT signature verification disabled (C2). Because signature verification is disabled, the middleware will decode and trust the claims within an unsigned JWT (C3). Therefore, an attacker providing an unsigned JWT with the 'role=admin' claim will be granted the necessary authorization to access the route.\"\n}"
+    },
+    {
+      "schema_version": "distributed-reasoning-suite-result.v1",
+      "scenario_id": "A-vulnerable",
+      "status": "FAIL",
+      "profile": "128k",
+      "target_prompt_tokens": 126464,
+      "actual_prompt_tokens": 126476,
+      "completion_tokens": 217,
+      "total_tokens": 126693,
+      "cached_tokens": null,
+      "reasoning_tokens": null,
+      "reasoning_effort": "default",
+      "cold_cache": true,
+      "prompt_token_delta": 12,
+      "evidence_positions": {
+        "A1": 0.08,
+        "AC1": 0.2399,
+        "A3": 0.4795,
+        "A4": 0.6394,
+        "A5": 0.7795,
+        "A6": 0.9095
+      },
+      "expected_verdict": "VULNERABLE",
+      "actual_verdict": "VULNERABLE",
+      "verdict_correct": true,
+      "expected_evidence_ids": [
+        "A1",
+        "A3",
+        "A4",
+        "A5",
+        "A6"
+      ],
+      "actual_evidence_ids": [
+        "A1",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "expected_counter_evidence_ids": [
+        "AC1"
+      ],
+      "actual_counter_evidence_ids": [
+        "AC1"
+      ],
+      "expected_uncertainty_evidence_ids": [],
+      "actual_uncertainty_evidence_ids": [],
+      "unsupported_ids": [],
+      "semantic_reasoning_pass": true,
+      "provenance_contract_pass": false,
+      "infrastructure_contract_pass": true,
+      "token_counter_match": true,
+      "reservation_contract_safe": true,
+      "latency_ms": 333186,
+      "parse_error": null,
+      "raw_response": "{\n  \"verdict\": \"VULNERABLE\",\n  \"evidence_ids\": [\n    \"A1\",\n    \"A3\",\n    \"A4\",\n    \"A5\"\n  ],\n  \"counter_evidence_ids\": [\n    \"AC1\"\n  ],\n  \"uncertainty_evidence_ids\": [],\n  \"explanation\": \"The route /api/admin/export (A1) requires the 'admin' role (A5). The middleware used is 'middleware.jwt_required', which explicitly behaves by decoding and passing claims downstream without cryptographic signature verification when 'JWT_VERIFY_SIGNATURE' is false (A4). In the production environment, 'JWT_VERIFY_SIGNATURE' is set to false (A3), which supersedes the library default of true (AC1). Therefore, an attacker can provide a JWT with a forged 'role=admin' claim, and the system will accept it as valid, granting access to the export route.\"\n}"
+    },
+    {
+      "schema_version": "distributed-reasoning-suite-result.v1",
+      "scenario_id": "B-not-vulnerable",
+      "status": "FAIL",
+      "profile": "128k",
+      "target_prompt_tokens": 126464,
+      "actual_prompt_tokens": 126463,
+      "completion_tokens": 229,
+      "total_tokens": 126692,
+      "cached_tokens": null,
+      "reasoning_tokens": null,
+      "reasoning_effort": "default",
+      "cold_cache": true,
+      "prompt_token_delta": -1,
+      "evidence_positions": {
+        "B1": 0.08,
+        "BC1": 0.2299,
+        "B3": 0.4596,
+        "B4": 0.6395,
+        "B5": 0.7896,
+        "B6": 0.9096
+      },
+      "expected_verdict": "NOT_VULNERABLE",
+      "actual_verdict": "NOT_VULNERABLE",
+      "verdict_correct": true,
+      "expected_evidence_ids": [
+        "B1",
+        "B3",
+        "B4",
+        "B5",
+        "B6"
+      ],
+      "actual_evidence_ids": [
+        "B1",
+        "B3",
+        "B4",
+        "B5"
+      ],
+      "expected_counter_evidence_ids": [
+        "BC1"
+      ],
+      "actual_counter_evidence_ids": [
+        "BC1"
+      ],
+      "expected_uncertainty_evidence_ids": [],
+      "actual_uncertainty_evidence_ids": [],
+      "unsupported_ids": [],
+      "semantic_reasoning_pass": true,
+      "provenance_contract_pass": false,
+      "infrastructure_contract_pass": true,
+      "token_counter_match": true,
+      "reservation_contract_safe": true,
+      "latency_ms": 488967,
+      "parse_error": null,
+      "raw_response": "{\n  \"verdict\": \"NOT_VULNERABLE\",\n  \"evidence_ids\": [\n    \"B1\",\n    \"B3\",\n    \"B4\",\n    \"B5\"\n  ],\n  \"counter_evidence_ids\": [\n    \"BC1\"\n  ],\n  \"uncertainty_evidence_ids\": [],\n  \"explanation\": \"The request to /api/admin/export is protected by 'middleware.jwt_required' (B1) and 'authorize_role(\\\"admin\\\")' (B1). According to B4, when 'JWT_VERIFY_SIGNATURE' is true, the middleware rejects requests with missing or invalid signatures before claims are passed downstream. Evidence B3 confirms that in the production environment, 'JWT_VERIFY_SIGNATURE' is set to true, and this policy supersedes the base configuration (BC1) where it was false. Therefore, an unsigned JWT would be rejected by the middleware, and the 'authorize_role' check (B5) would never be reached.\"\n}"
+    },
+    {
+      "schema_version": "distributed-reasoning-suite-result.v1",
+      "scenario_id": "C-insufficient",
+      "status": "FAIL",
+      "profile": "128k",
+      "target_prompt_tokens": 126464,
+      "actual_prompt_tokens": 126447,
+      "completion_tokens": 160,
+      "total_tokens": 126607,
+      "cached_tokens": null,
+      "reasoning_tokens": null,
+      "reasoning_effort": "default",
+      "cold_cache": true,
+      "prompt_token_delta": -17,
+      "evidence_positions": {
+        "C1": 0.08,
+        "C2": 0.2798,
+        "C3": 0.4895,
+        "CC1": 0.6797,
+        "C4": 0.8995
+      },
+      "expected_verdict": "INSUFFICIENT_EVIDENCE",
+      "actual_verdict": "VULNERABLE",
+      "verdict_correct": false,
+      "expected_evidence_ids": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "actual_evidence_ids": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "expected_counter_evidence_ids": [],
+      "actual_counter_evidence_ids": [],
+      "expected_uncertainty_evidence_ids": [
+        "C4"
+      ],
+      "actual_uncertainty_evidence_ids": [
+        "C4"
+      ],
+      "unsupported_ids": [],
+      "semantic_reasoning_pass": false,
+      "provenance_contract_pass": true,
+      "infrastructure_contract_pass": true,
+      "token_counter_match": true,
+      "reservation_contract_safe": true,
+      "latency_ms": 330300,
+      "parse_error": null,
+      "raw_response": "{\n  \"verdict\": \"VULNERABLE\",\n  \"evidence_ids\": [\"C1\", \"C2\", \"C3\"],\n  \"counter_evidence_ids\": [],\n  \"uncertainty_evidence_ids\": [\"C4\"],\n  \"explanation\": \"The route /api/admin/export requires 'admin' role authorization (C1). The production environment has JWT signature verification disabled (C2). Because signature verification is disabled, the middleware (middleware.jwt_required) will decode the JWT and make the claims available downstream even if the token is unsigned (C3). Therefore, an attacker can provide a JWT with a forged 'role=admin' claim, and the system will treat it as a valid admin request.\"\n}"
+    }
+  ]
+}
