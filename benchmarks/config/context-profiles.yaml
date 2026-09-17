@@ -1,0 +1,27 @@
+profiles:
+  32k:
+    context_ceiling: 32768
+    output_reserve: 4096
+    safety_margin_tokens: 512
+    target_prompt_tokens: 28160
+
+  64k:
+    context_ceiling: 65536
+    output_reserve: 4096
+    safety_margin_tokens: 512
+    target_prompt_tokens: 60928
+
+  96k:
+    context_ceiling: 98304
+    output_reserve: 4096
+    safety_margin_tokens: 512
+    target_prompt_tokens: 93696
+
+  128k:
+    context_ceiling: 131072
+    output_reserve: 4096
+    safety_margin_tokens: 512
+    target_prompt_tokens: 126464
+
+generation:
+  target_tolerance_tokens: 128

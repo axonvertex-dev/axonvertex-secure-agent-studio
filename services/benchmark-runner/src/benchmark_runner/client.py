@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+
 from typing import Any
 
 import httpx
@@ -14,10 +16,17 @@ class OpenAICompatibleClient:
     ) -> None:
         self.endpoint = endpoint
 
+        read_timeout_seconds = float(
+            os.environ.get(
+                "BENCHMARK_HTTP_READ_TIMEOUT_SECONDS",
+                "900",
+            )
+        )
+
         self._client = httpx.Client(
             timeout=httpx.Timeout(
                 connect=10.0,
-                read=300.0,
+                read=read_timeout_seconds,
                 write=60.0,
                 pool=10.0,
             ),
