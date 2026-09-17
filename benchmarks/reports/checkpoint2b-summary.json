@@ -1,0 +1,43 @@
+{
+  "schema_version": "checkpoint2b-summary.v1",
+  "checkpoint": "2B",
+  "profile": "32k",
+  "source_run": "20260917T212128Z",
+  "status": "PASS",
+  "total_scenarios": 3,
+  "passed": 3,
+  "failed": 0,
+  "mean_latency_ms": 40160.67,
+  "scenarios": [
+    {
+      "scenario_id": "A-vulnerable",
+      "verdict": "VULNERABLE",
+      "status": "PASS",
+      "semantic_reasoning_pass": true,
+      "provenance_contract_pass": true,
+      "infrastructure_contract_pass": true,
+      "actual_prompt_tokens": 28167,
+      "latency_ms": 38127
+    },
+    {
+      "scenario_id": "B-not-vulnerable",
+      "verdict": "NOT_VULNERABLE",
+      "status": "PASS",
+      "semantic_reasoning_pass": true,
+      "provenance_contract_pass": true,
+      "infrastructure_contract_pass": true,
+      "actual_prompt_tokens": 28154,
+      "latency_ms": 40444
+    },
+    {
+      "scenario_id": "C-insufficient",
+      "verdict": "INSUFFICIENT_EVIDENCE",
+      "status": "PASS",
+      "semantic_reasoning_pass": true,
+      "provenance_contract_pass": true,
+      "infrastructure_contract_pass": true,
+      "actual_prompt_tokens": 28175,
+      "latency_ms": 41911
+    }
+  ]
+}
