@@ -1,0 +1,21 @@
+{
+  "name": "axonvertex-secure-agent-studio",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Sovereign security-governed multi-agent software engineering platform",
+  "license": "Apache-2.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "probe:gemma": "npm run probe --workspace @axonvertex/model-client"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
