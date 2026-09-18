@@ -1,0 +1,561 @@
+{
+  "schema_version": "decision-contract-v2-analysis.v1",
+  "note": "Historical benchmark results are unchanged. This report applies a second, explicitly separated causal-decision rubric.",
+  "baseline": {
+    "summary": {
+      "total": 12,
+      "decision_sufficiency_passed": 9,
+      "decision_sufficiency_failed": 3,
+      "model_audit_citation_complete": 4,
+      "model_audit_citation_incomplete": 8
+    },
+    "cases": [
+      {
+        "source": "checkpoint2c-baseline-v1",
+        "profile": "128k",
+        "scenario_id": "A-vulnerable",
+        "expected_verdict": "VULNERABLE",
+        "actual_verdict": "VULNERABLE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "A6"
+        ],
+        "actual_support": [
+          "A1",
+          "A3",
+          "A4",
+          "A5"
+        ],
+        "actual_counter": [
+          "AC1"
+        ],
+        "actual_uncertainty": []
+      },
+      {
+        "source": "checkpoint2c-baseline-v1",
+        "profile": "128k",
+        "scenario_id": "B-not-vulnerable",
+        "expected_verdict": "NOT_VULNERABLE",
+        "actual_verdict": "NOT_VULNERABLE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "B6"
+        ],
+        "actual_support": [
+          "B1",
+          "B3",
+          "B4",
+          "B5"
+        ],
+        "actual_counter": [
+          "BC1"
+        ],
+        "actual_uncertainty": []
+      },
+      {
+        "source": "checkpoint2c-baseline-v1",
+        "profile": "128k",
+        "scenario_id": "C-insufficient",
+        "expected_verdict": "INSUFFICIENT_EVIDENCE",
+        "actual_verdict": "VULNERABLE",
+        "verdict_correct": false,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": false,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "CC1"
+        ],
+        "actual_support": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "actual_counter": [],
+        "actual_uncertainty": [
+          "C4"
+        ]
+      },
+      {
+        "source": "checkpoint2c-baseline-v1",
+        "profile": "32k",
+        "scenario_id": "A-vulnerable",
+        "expected_verdict": "VULNERABLE",
+        "actual_verdict": "VULNERABLE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": true,
+        "missing_audit_citations": [],
+        "actual_support": [
+          "A1",
+          "A3",
+          "A4",
+          "A5",
+          "A6"
+        ],
+        "actual_counter": [
+          "AC1"
+        ],
+        "actual_uncertainty": []
+      },
+      {
+        "source": "checkpoint2c-baseline-v1",
+        "profile": "32k",
+        "scenario_id": "B-not-vulnerable",
+        "expected_verdict": "NOT_VULNERABLE",
+        "actual_verdict": "NOT_VULNERABLE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": true,
+        "missing_audit_citations": [],
+        "actual_support": [
+          "B1",
+          "B3",
+          "B4",
+          "B5",
+          "B6"
+        ],
+        "actual_counter": [
+          "BC1"
+        ],
+        "actual_uncertainty": []
+      },
+      {
+        "source": "checkpoint2c-baseline-v1",
+        "profile": "32k",
+        "scenario_id": "C-insufficient",
+        "expected_verdict": "INSUFFICIENT_EVIDENCE",
+        "actual_verdict": "INSUFFICIENT_EVIDENCE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "CC1"
+        ],
+        "actual_support": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "actual_counter": [],
+        "actual_uncertainty": [
+          "C4"
+        ]
+      },
+      {
+        "source": "checkpoint2c-baseline-v1",
+        "profile": "64k",
+        "scenario_id": "A-vulnerable",
+        "expected_verdict": "VULNERABLE",
+        "actual_verdict": "VULNERABLE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": true,
+        "missing_audit_citations": [],
+        "actual_support": [
+          "A1",
+          "A3",
+          "A4",
+          "A5",
+          "A6"
+        ],
+        "actual_counter": [
+          "AC1"
+        ],
+        "actual_uncertainty": []
+      },
+      {
+        "source": "checkpoint2c-baseline-v1",
+        "profile": "64k",
+        "scenario_id": "B-not-vulnerable",
+        "expected_verdict": "NOT_VULNERABLE",
+        "actual_verdict": "NOT_VULNERABLE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "B6"
+        ],
+        "actual_support": [
+          "B1",
+          "B3",
+          "B4",
+          "B5"
+        ],
+        "actual_counter": [
+          "BC1"
+        ],
+        "actual_uncertainty": []
+      },
+      {
+        "source": "checkpoint2c-baseline-v1",
+        "profile": "64k",
+        "scenario_id": "C-insufficient",
+        "expected_verdict": "INSUFFICIENT_EVIDENCE",
+        "actual_verdict": "VULNERABLE",
+        "verdict_correct": false,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": false,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "CC1"
+        ],
+        "actual_support": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "actual_counter": [],
+        "actual_uncertainty": [
+          "C4"
+        ]
+      },
+      {
+        "source": "checkpoint2c-baseline-v1",
+        "profile": "96k",
+        "scenario_id": "A-vulnerable",
+        "expected_verdict": "VULNERABLE",
+        "actual_verdict": "VULNERABLE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": true,
+        "missing_audit_citations": [],
+        "actual_support": [
+          "A1",
+          "A3",
+          "A4",
+          "A5",
+          "A6"
+        ],
+        "actual_counter": [
+          "AC1"
+        ],
+        "actual_uncertainty": []
+      },
+      {
+        "source": "checkpoint2c-baseline-v1",
+        "profile": "96k",
+        "scenario_id": "B-not-vulnerable",
+        "expected_verdict": "NOT_VULNERABLE",
+        "actual_verdict": "NOT_VULNERABLE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "B6"
+        ],
+        "actual_support": [
+          "B1",
+          "B3",
+          "B4",
+          "B5"
+        ],
+        "actual_counter": [
+          "BC1"
+        ],
+        "actual_uncertainty": []
+      },
+      {
+        "source": "checkpoint2c-baseline-v1",
+        "profile": "96k",
+        "scenario_id": "C-insufficient",
+        "expected_verdict": "INSUFFICIENT_EVIDENCE",
+        "actual_verdict": "VULNERABLE",
+        "verdict_correct": false,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": false,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "CC1"
+        ],
+        "actual_support": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "actual_counter": [],
+        "actual_uncertainty": [
+          "C4"
+        ]
+      }
+    ]
+  },
+  "compaction": {
+    "summary": {
+      "total": 9,
+      "decision_sufficiency_passed": 9,
+      "decision_sufficiency_failed": 0,
+      "model_audit_citation_complete": 0,
+      "model_audit_citation_incomplete": 9
+    },
+    "cases": [
+      {
+        "source": "checkpoint2c3-compaction-v1",
+        "profile": "128k",
+        "scenario_id": "A-vulnerable",
+        "expected_verdict": "VULNERABLE",
+        "actual_verdict": "VULNERABLE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "A6"
+        ],
+        "actual_support": [
+          "A1",
+          "A3",
+          "A4",
+          "A5"
+        ],
+        "actual_counter": [
+          "AC1"
+        ],
+        "actual_uncertainty": []
+      },
+      {
+        "source": "checkpoint2c3-compaction-v1",
+        "profile": "128k",
+        "scenario_id": "B-not-vulnerable",
+        "expected_verdict": "NOT_VULNERABLE",
+        "actual_verdict": "NOT_VULNERABLE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "B6"
+        ],
+        "actual_support": [
+          "B1",
+          "B3",
+          "B4",
+          "B5"
+        ],
+        "actual_counter": [
+          "BC1"
+        ],
+        "actual_uncertainty": []
+      },
+      {
+        "source": "checkpoint2c3-compaction-v1",
+        "profile": "128k",
+        "scenario_id": "C-insufficient",
+        "expected_verdict": "INSUFFICIENT_EVIDENCE",
+        "actual_verdict": "INSUFFICIENT_EVIDENCE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "CC1"
+        ],
+        "actual_support": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "actual_counter": [],
+        "actual_uncertainty": [
+          "C4"
+        ]
+      },
+      {
+        "source": "checkpoint2c3-compaction-v1",
+        "profile": "64k",
+        "scenario_id": "A-vulnerable",
+        "expected_verdict": "VULNERABLE",
+        "actual_verdict": "VULNERABLE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "A6"
+        ],
+        "actual_support": [
+          "A1",
+          "A3",
+          "A4",
+          "A5"
+        ],
+        "actual_counter": [
+          "AC1"
+        ],
+        "actual_uncertainty": []
+      },
+      {
+        "source": "checkpoint2c3-compaction-v1",
+        "profile": "64k",
+        "scenario_id": "B-not-vulnerable",
+        "expected_verdict": "NOT_VULNERABLE",
+        "actual_verdict": "NOT_VULNERABLE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "B6"
+        ],
+        "actual_support": [
+          "B1",
+          "B3",
+          "B4",
+          "B5"
+        ],
+        "actual_counter": [
+          "BC1"
+        ],
+        "actual_uncertainty": []
+      },
+      {
+        "source": "checkpoint2c3-compaction-v1",
+        "profile": "64k",
+        "scenario_id": "C-insufficient",
+        "expected_verdict": "INSUFFICIENT_EVIDENCE",
+        "actual_verdict": "INSUFFICIENT_EVIDENCE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "CC1"
+        ],
+        "actual_support": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "actual_counter": [],
+        "actual_uncertainty": [
+          "C4"
+        ]
+      },
+      {
+        "source": "checkpoint2c3-compaction-v1",
+        "profile": "96k",
+        "scenario_id": "A-vulnerable",
+        "expected_verdict": "VULNERABLE",
+        "actual_verdict": "VULNERABLE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "A6"
+        ],
+        "actual_support": [
+          "A1",
+          "A3",
+          "A4",
+          "A5"
+        ],
+        "actual_counter": [
+          "AC1"
+        ],
+        "actual_uncertainty": []
+      },
+      {
+        "source": "checkpoint2c3-compaction-v1",
+        "profile": "96k",
+        "scenario_id": "B-not-vulnerable",
+        "expected_verdict": "NOT_VULNERABLE",
+        "actual_verdict": "NOT_VULNERABLE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "B6"
+        ],
+        "actual_support": [
+          "B1",
+          "B3",
+          "B4",
+          "B5"
+        ],
+        "actual_counter": [
+          "BC1"
+        ],
+        "actual_uncertainty": []
+      },
+      {
+        "source": "checkpoint2c3-compaction-v1",
+        "profile": "96k",
+        "scenario_id": "C-insufficient",
+        "expected_verdict": "INSUFFICIENT_EVIDENCE",
+        "actual_verdict": "INSUFFICIENT_EVIDENCE",
+        "verdict_correct": true,
+        "decision_support_complete": true,
+        "decision_counter_complete": true,
+        "decision_uncertainty_complete": true,
+        "decision_sufficiency_pass": true,
+        "model_audit_citation_complete": false,
+        "missing_audit_citations": [
+          "CC1"
+        ],
+        "actual_support": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "actual_counter": [],
+        "actual_uncertainty": [
+          "C4"
+        ]
+      }
+    ]
+  }
+}

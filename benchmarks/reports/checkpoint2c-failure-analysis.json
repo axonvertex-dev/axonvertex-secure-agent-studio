@@ -1,0 +1,306 @@
+{
+  "schema_version": "checkpoint2c-failure-analysis.v2",
+  "checkpoint": "2C.1",
+  "source_run": "checkpoint2c-baseline-v1",
+  "total_cases": 12,
+  "passed": 5,
+  "failed": 7,
+  "failure_class_counts": {
+    "MISSING_REQUIRED_PROVENANCE": 4,
+    "PROVENANCE_CONTRACT_FAILURE": 4,
+    "SEMANTIC_VERDICT_FAILURE": 3,
+    "TRACE_VERDICT_CONTRADICTION": 3
+  },
+  "missing_evidence_frequency": {
+    "A6": 1,
+    "B6": 3
+  },
+  "failed_cases": [
+    {
+      "profile": "128k",
+      "scenario_id": "A-vulnerable",
+      "status": "FAIL",
+      "expected_verdict": "VULNERABLE",
+      "actual_verdict": "VULNERABLE",
+      "semantic_reasoning_pass": true,
+      "provenance_contract_pass": false,
+      "infrastructure_contract_pass": true,
+      "required_supporting_evidence": [
+        "A1",
+        "A3",
+        "A4",
+        "A5",
+        "A6"
+      ],
+      "actual_supporting_evidence": [
+        "A1",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "missing_supporting_evidence": [
+        "A6"
+      ],
+      "required_counter_evidence": [
+        "AC1"
+      ],
+      "actual_counter_evidence": [
+        "AC1"
+      ],
+      "missing_counter_evidence": [],
+      "required_uncertainty_evidence": [],
+      "actual_uncertainty_evidence": [],
+      "missing_uncertainty_evidence": [],
+      "failure_classes": [
+        "MISSING_REQUIRED_PROVENANCE",
+        "PROVENANCE_CONTRACT_FAILURE"
+      ],
+      "trace_verdict_contradiction": false,
+      "prompt_tokens": 126476,
+      "latency_ms": 333186
+    },
+    {
+      "profile": "128k",
+      "scenario_id": "B-not-vulnerable",
+      "status": "FAIL",
+      "expected_verdict": "NOT_VULNERABLE",
+      "actual_verdict": "NOT_VULNERABLE",
+      "semantic_reasoning_pass": true,
+      "provenance_contract_pass": false,
+      "infrastructure_contract_pass": true,
+      "required_supporting_evidence": [
+        "B1",
+        "B3",
+        "B4",
+        "B5",
+        "B6"
+      ],
+      "actual_supporting_evidence": [
+        "B1",
+        "B3",
+        "B4",
+        "B5"
+      ],
+      "missing_supporting_evidence": [
+        "B6"
+      ],
+      "required_counter_evidence": [
+        "BC1"
+      ],
+      "actual_counter_evidence": [
+        "BC1"
+      ],
+      "missing_counter_evidence": [],
+      "required_uncertainty_evidence": [],
+      "actual_uncertainty_evidence": [],
+      "missing_uncertainty_evidence": [],
+      "failure_classes": [
+        "MISSING_REQUIRED_PROVENANCE",
+        "PROVENANCE_CONTRACT_FAILURE"
+      ],
+      "trace_verdict_contradiction": false,
+      "prompt_tokens": 126463,
+      "latency_ms": 488967
+    },
+    {
+      "profile": "128k",
+      "scenario_id": "C-insufficient",
+      "status": "FAIL",
+      "expected_verdict": "INSUFFICIENT_EVIDENCE",
+      "actual_verdict": "VULNERABLE",
+      "semantic_reasoning_pass": false,
+      "provenance_contract_pass": true,
+      "infrastructure_contract_pass": true,
+      "required_supporting_evidence": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "actual_supporting_evidence": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "missing_supporting_evidence": [],
+      "required_counter_evidence": [],
+      "actual_counter_evidence": [],
+      "missing_counter_evidence": [],
+      "required_uncertainty_evidence": [
+        "C4"
+      ],
+      "actual_uncertainty_evidence": [
+        "C4"
+      ],
+      "missing_uncertainty_evidence": [],
+      "failure_classes": [
+        "SEMANTIC_VERDICT_FAILURE",
+        "TRACE_VERDICT_CONTRADICTION"
+      ],
+      "trace_verdict_contradiction": true,
+      "prompt_tokens": 126447,
+      "latency_ms": 330300
+    },
+    {
+      "profile": "64k",
+      "scenario_id": "B-not-vulnerable",
+      "status": "FAIL",
+      "expected_verdict": "NOT_VULNERABLE",
+      "actual_verdict": "NOT_VULNERABLE",
+      "semantic_reasoning_pass": true,
+      "provenance_contract_pass": false,
+      "infrastructure_contract_pass": true,
+      "required_supporting_evidence": [
+        "B1",
+        "B3",
+        "B4",
+        "B5",
+        "B6"
+      ],
+      "actual_supporting_evidence": [
+        "B1",
+        "B3",
+        "B4",
+        "B5"
+      ],
+      "missing_supporting_evidence": [
+        "B6"
+      ],
+      "required_counter_evidence": [
+        "BC1"
+      ],
+      "actual_counter_evidence": [
+        "BC1"
+      ],
+      "missing_counter_evidence": [],
+      "required_uncertainty_evidence": [],
+      "actual_uncertainty_evidence": [],
+      "missing_uncertainty_evidence": [],
+      "failure_classes": [
+        "MISSING_REQUIRED_PROVENANCE",
+        "PROVENANCE_CONTRACT_FAILURE"
+      ],
+      "trace_verdict_contradiction": false,
+      "prompt_tokens": 60936,
+      "latency_ms": 110534
+    },
+    {
+      "profile": "64k",
+      "scenario_id": "C-insufficient",
+      "status": "FAIL",
+      "expected_verdict": "INSUFFICIENT_EVIDENCE",
+      "actual_verdict": "VULNERABLE",
+      "semantic_reasoning_pass": false,
+      "provenance_contract_pass": true,
+      "infrastructure_contract_pass": true,
+      "required_supporting_evidence": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "actual_supporting_evidence": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "missing_supporting_evidence": [],
+      "required_counter_evidence": [],
+      "actual_counter_evidence": [],
+      "missing_counter_evidence": [],
+      "required_uncertainty_evidence": [
+        "C4"
+      ],
+      "actual_uncertainty_evidence": [
+        "C4"
+      ],
+      "missing_uncertainty_evidence": [],
+      "failure_classes": [
+        "SEMANTIC_VERDICT_FAILURE",
+        "TRACE_VERDICT_CONTRADICTION"
+      ],
+      "trace_verdict_contradiction": true,
+      "prompt_tokens": 60920,
+      "latency_ms": 109271
+    },
+    {
+      "profile": "96k",
+      "scenario_id": "B-not-vulnerable",
+      "status": "FAIL",
+      "expected_verdict": "NOT_VULNERABLE",
+      "actual_verdict": "NOT_VULNERABLE",
+      "semantic_reasoning_pass": true,
+      "provenance_contract_pass": false,
+      "infrastructure_contract_pass": true,
+      "required_supporting_evidence": [
+        "B1",
+        "B3",
+        "B4",
+        "B5",
+        "B6"
+      ],
+      "actual_supporting_evidence": [
+        "B1",
+        "B3",
+        "B4",
+        "B5"
+      ],
+      "missing_supporting_evidence": [
+        "B6"
+      ],
+      "required_counter_evidence": [
+        "BC1"
+      ],
+      "actual_counter_evidence": [
+        "BC1"
+      ],
+      "missing_counter_evidence": [],
+      "required_uncertainty_evidence": [],
+      "actual_uncertainty_evidence": [],
+      "missing_uncertainty_evidence": [],
+      "failure_classes": [
+        "MISSING_REQUIRED_PROVENANCE",
+        "PROVENANCE_CONTRACT_FAILURE"
+      ],
+      "trace_verdict_contradiction": false,
+      "prompt_tokens": 93681,
+      "latency_ms": 437210
+    },
+    {
+      "profile": "96k",
+      "scenario_id": "C-insufficient",
+      "status": "FAIL",
+      "expected_verdict": "INSUFFICIENT_EVIDENCE",
+      "actual_verdict": "VULNERABLE",
+      "semantic_reasoning_pass": false,
+      "provenance_contract_pass": true,
+      "infrastructure_contract_pass": true,
+      "required_supporting_evidence": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "actual_supporting_evidence": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "missing_supporting_evidence": [],
+      "required_counter_evidence": [],
+      "actual_counter_evidence": [],
+      "missing_counter_evidence": [],
+      "required_uncertainty_evidence": [
+        "C4"
+      ],
+      "actual_uncertainty_evidence": [
+        "C4"
+      ],
+      "missing_uncertainty_evidence": [],
+      "failure_classes": [
+        "SEMANTIC_VERDICT_FAILURE",
+        "TRACE_VERDICT_CONTRADICTION"
+      ],
+      "trace_verdict_contradiction": true,
+      "prompt_tokens": 93702,
+      "latency_ms": 200353
+    }
+  ]
+}

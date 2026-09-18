@@ -1,0 +1,39 @@
+{
+  "schema_version": "distributed-evidence-contract.v2",
+  "principle": "Separate decision sufficiency from full audit provenance.",
+  "scenarios": {
+    "A-vulnerable": {
+      "expected_verdict": "VULNERABLE",
+      "decision_required_support": ["A1", "A3", "A4", "A5"],
+      "decision_required_counter": ["AC1"],
+      "decision_required_uncertainty": [],
+      "decision_allowed_support": ["A1", "A3", "A4", "A5", "A6"],
+      "decision_allowed_counter": ["AC1"],
+      "decision_allowed_uncertainty": [],
+      "closure_evidence": ["A6"],
+      "audit_relevant_evidence": ["A1", "AC1", "A3", "A4", "A5", "A6"]
+    },
+    "B-not-vulnerable": {
+      "expected_verdict": "NOT_VULNERABLE",
+      "decision_required_support": ["B1", "B3", "B4", "B5"],
+      "decision_required_counter": ["BC1"],
+      "decision_required_uncertainty": [],
+      "decision_allowed_support": ["B1", "B3", "B4", "B5", "B6"],
+      "decision_allowed_counter": ["BC1"],
+      "decision_allowed_uncertainty": [],
+      "closure_evidence": ["B6"],
+      "audit_relevant_evidence": ["B1", "BC1", "B3", "B4", "B5", "B6"]
+    },
+    "C-insufficient": {
+      "expected_verdict": "INSUFFICIENT_EVIDENCE",
+      "decision_required_support": ["C1", "C2", "C3"],
+      "decision_required_counter": [],
+      "decision_required_uncertainty": ["C4"],
+      "decision_allowed_support": ["C1", "C2", "C3"],
+      "decision_allowed_counter": [],
+      "decision_allowed_uncertainty": ["C4", "CC1"],
+      "closure_evidence": ["CC1"],
+      "audit_relevant_evidence": ["C1", "C2", "C3", "CC1", "C4"]
+    }
+  }
+}
