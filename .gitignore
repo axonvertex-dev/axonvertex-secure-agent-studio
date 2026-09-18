@@ -38,3 +38,6 @@ Thumbs.db
 # Python packaging metadata
 *.egg-info/
 *.egg-info
+
+# External benchmark datasets
+benchmarks/datasets/*/raw/

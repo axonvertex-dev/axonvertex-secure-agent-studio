@@ -94,6 +94,8 @@ def execute_scenario(
     counter: TokenCounter,
     client: OpenAICompatibleClient,
     profile_name: str = DEFAULT_PROFILE_NAME,
+    enable_thinking: bool | None = None,
+    max_output_tokens: int = MAX_OUTPUT_TOKENS,
 ) -> dict[str, Any]:
     endpoint = gemma_endpoint()
 
@@ -139,7 +141,15 @@ def execute_scenario(
         ],
         temperature=0.0,
         max_tokens=
-            MAX_OUTPUT_TOKENS,
+            max_output_tokens,
+        chat_template_kwargs=(
+            {
+                "enable_thinking":
+                    enable_thinking,
+            }
+            if enable_thinking is not None
+            else None
+        ),
     )
 
     latency_ms = round(
@@ -154,6 +164,10 @@ def execute_scenario(
         "choices",
         [{}],
     )[0]
+
+    finish_reason = choice.get(
+        "finish_reason"
+    )
 
     raw_response = (
         choice
@@ -195,11 +209,21 @@ def execute_scenario(
         else None
     )
 
-    reasoning_tokens = (
-        completion_details.get("reasoning_tokens")
-        if isinstance(completion_details, dict)
-        else None
+    reasoning_tokens = usage.get(
+        "reasoning_tokens"
     )
+
+    if reasoning_tokens is None:
+        reasoning_tokens = (
+            completion_details.get(
+                "reasoning_tokens"
+            )
+            if isinstance(
+                completion_details,
+                dict,
+            )
+            else None
+        )
 
     parsed = None
     parse_error = None
@@ -405,6 +429,32 @@ def execute_scenario(
 
         "reasoning_effort":
             "default",
+
+        "thinking_mode":
+            (
+                "on"
+                if enable_thinking is True
+                else (
+                    "off"
+                    if enable_thinking is False
+                    else "default"
+                )
+            ),
+
+        "enable_thinking":
+            enable_thinking,
+
+        "max_output_tokens":
+            max_output_tokens,
+
+        "finish_reason":
+            finish_reason,
+
+        "generation_complete":
+            (
+                finish_reason != "length"
+                and bool(raw_response)
+            ),
 
         "cold_cache":
             True,

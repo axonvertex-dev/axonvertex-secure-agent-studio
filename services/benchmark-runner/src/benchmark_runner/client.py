@@ -56,15 +56,23 @@ class OpenAICompatibleClient:
         messages: list[dict[str, str]],
         temperature: float,
         max_tokens: int,
+        chat_template_kwargs: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
+        payload: dict[str, Any] = {
+            "model": self.endpoint.model,
+            "messages": messages,
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+        }
+
+        if chat_template_kwargs is not None:
+            payload["chat_template_kwargs"] = (
+                chat_template_kwargs
+            )
+
         response = self._client.post(
             f"{self.endpoint.base_url}/chat/completions",
-            json={
-                "model": self.endpoint.model,
-                "messages": messages,
-                "temperature": temperature,
-                "max_tokens": max_tokens,
-            },
+            json=payload,
         )
 
         response.raise_for_status()

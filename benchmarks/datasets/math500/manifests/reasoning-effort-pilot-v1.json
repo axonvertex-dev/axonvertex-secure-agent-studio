@@ -1,0 +1,210 @@
+{
+  "schema_version": "math500-reasoning-effort-pilot.v1",
+  "dataset": "HuggingFaceH4/MATH-500",
+  "split": "test",
+  "seed": 4242,
+  "sample_size": 40,
+  "selection": "deterministic subject-level round-robin",
+  "examples": [
+    {
+      "unique_id": "test/algebra/2789.json",
+      "subject": "Algebra",
+      "level": 1
+    },
+    {
+      "unique_id": "test/algebra/1349.json",
+      "subject": "Algebra",
+      "level": 2
+    },
+    {
+      "unique_id": "test/algebra/661.json",
+      "subject": "Algebra",
+      "level": 3
+    },
+    {
+      "unique_id": "test/algebra/2430.json",
+      "subject": "Algebra",
+      "level": 4
+    },
+    {
+      "unique_id": "test/algebra/2064.json",
+      "subject": "Algebra",
+      "level": 5
+    },
+    {
+      "unique_id": "test/counting_and_probability/14.json",
+      "subject": "Counting & Probability",
+      "level": 1
+    },
+    {
+      "unique_id": "test/counting_and_probability/389.json",
+      "subject": "Counting & Probability",
+      "level": 2
+    },
+    {
+      "unique_id": "test/counting_and_probability/71.json",
+      "subject": "Counting & Probability",
+      "level": 3
+    },
+    {
+      "unique_id": "test/counting_and_probability/282.json",
+      "subject": "Counting & Probability",
+      "level": 4
+    },
+    {
+      "unique_id": "test/counting_and_probability/188.json",
+      "subject": "Counting & Probability",
+      "level": 5
+    },
+    {
+      "unique_id": "test/geometry/434.json",
+      "subject": "Geometry",
+      "level": 1
+    },
+    {
+      "unique_id": "test/geometry/846.json",
+      "subject": "Geometry",
+      "level": 2
+    },
+    {
+      "unique_id": "test/geometry/795.json",
+      "subject": "Geometry",
+      "level": 3
+    },
+    {
+      "unique_id": "test/geometry/1097.json",
+      "subject": "Geometry",
+      "level": 4
+    },
+    {
+      "unique_id": "test/geometry/561.json",
+      "subject": "Geometry",
+      "level": 5
+    },
+    {
+      "unique_id": "test/intermediate_algebra/134.json",
+      "subject": "Intermediate Algebra",
+      "level": 1
+    },
+    {
+      "unique_id": "test/intermediate_algebra/991.json",
+      "subject": "Intermediate Algebra",
+      "level": 2
+    },
+    {
+      "unique_id": "test/intermediate_algebra/1300.json",
+      "subject": "Intermediate Algebra",
+      "level": 3
+    },
+    {
+      "unique_id": "test/intermediate_algebra/1210.json",
+      "subject": "Intermediate Algebra",
+      "level": 4
+    },
+    {
+      "unique_id": "test/intermediate_algebra/232.json",
+      "subject": "Intermediate Algebra",
+      "level": 5
+    },
+    {
+      "unique_id": "test/number_theory/239.json",
+      "subject": "Number Theory",
+      "level": 1
+    },
+    {
+      "unique_id": "test/number_theory/410.json",
+      "subject": "Number Theory",
+      "level": 2
+    },
+    {
+      "unique_id": "test/number_theory/1185.json",
+      "subject": "Number Theory",
+      "level": 3
+    },
+    {
+      "unique_id": "test/number_theory/1287.json",
+      "subject": "Number Theory",
+      "level": 4
+    },
+    {
+      "unique_id": "test/number_theory/838.json",
+      "subject": "Number Theory",
+      "level": 5
+    },
+    {
+      "unique_id": "test/prealgebra/996.json",
+      "subject": "Prealgebra",
+      "level": 1
+    },
+    {
+      "unique_id": "test/prealgebra/572.json",
+      "subject": "Prealgebra",
+      "level": 2
+    },
+    {
+      "unique_id": "test/prealgebra/1743.json",
+      "subject": "Prealgebra",
+      "level": 3
+    },
+    {
+      "unique_id": "test/prealgebra/2057.json",
+      "subject": "Prealgebra",
+      "level": 4
+    },
+    {
+      "unique_id": "test/prealgebra/1961.json",
+      "subject": "Prealgebra",
+      "level": 5
+    },
+    {
+      "unique_id": "test/precalculus/1289.json",
+      "subject": "Precalculus",
+      "level": 1
+    },
+    {
+      "unique_id": "test/precalculus/697.json",
+      "subject": "Precalculus",
+      "level": 2
+    },
+    {
+      "unique_id": "test/precalculus/1082.json",
+      "subject": "Precalculus",
+      "level": 3
+    },
+    {
+      "unique_id": "test/precalculus/1313.json",
+      "subject": "Precalculus",
+      "level": 4
+    },
+    {
+      "unique_id": "test/precalculus/768.json",
+      "subject": "Precalculus",
+      "level": 5
+    },
+    {
+      "unique_id": "test/algebra/478.json",
+      "subject": "Algebra",
+      "level": 1
+    },
+    {
+      "unique_id": "test/algebra/1425.json",
+      "subject": "Algebra",
+      "level": 2
+    },
+    {
+      "unique_id": "test/algebra/694.json",
+      "subject": "Algebra",
+      "level": 3
+    },
+    {
+      "unique_id": "test/algebra/1072.json",
+      "subject": "Algebra",
+      "level": 4
+    },
+    {
+      "unique_id": "test/algebra/2626.json",
+      "subject": "Algebra",
+      "level": 5
+    }
+  ]
+}
