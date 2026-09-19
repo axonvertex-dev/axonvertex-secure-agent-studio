@@ -137,7 +137,7 @@ class Queue:
             if not row or row["status"] != "WORKING":
                 raise TransitionError("Stage completion requires an active job")
             status = HANDOFF_COMPLETE if complete else "QUEUED"
-            self.db.execute("UPDATE jobs SET status=?,phase=?,attempts=0,last_error_type=NULL," 
+            self.db.execute("UPDATE jobs SET status=?,phase=?,attempts=0,last_error_type=NULL,"
                             "updated_at=? WHERE run_id=?", (status, phase, utc_now(), run_id))
             self._event(run_id, "STAGE_COMMITTED", "PERSISTED_BRIDGE_STATE", phase,
                         {"job_status": status})
