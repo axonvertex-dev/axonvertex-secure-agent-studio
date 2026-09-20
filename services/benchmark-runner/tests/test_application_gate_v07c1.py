@@ -153,4 +153,3 @@ class ApplicationPreflightTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             gate.preflight("../bad", **(self.expected | {
                 "expected_decision_receipt_sha256": self.receipt}))
-
