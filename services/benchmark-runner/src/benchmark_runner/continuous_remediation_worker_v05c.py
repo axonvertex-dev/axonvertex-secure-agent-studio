@@ -11,6 +11,7 @@ import difflib
 import json
 import os
 import secrets
+import stat
 import sqlite3
 import sys
 import time
@@ -422,6 +423,40 @@ def safe_candidate_workspace(run_id: str, source: str, *, base: Path) -> Path:
     return candidate
 
 
+def prepare_sandbox_readonly_inputs(repo: Path, workspace: Path, *, candidate_source: str) -> None:
+    """Bridge private host state to isolated Docker UID 65534, fixture files ONLY.
+
+    systemd UMask=0077 stays in force for SQLite, keys, logs and artifacts.
+    This grants read/traverse solely to the four verified Python inputs.
+    No arbitrary paths, symlinks, extra content or executable permissions allowed.
+    """
+    for directory, expected in (
+        (repo, {"app.py": old.APP_VULNERABLE, "verify.py": old.VERIFY_SOURCE}),
+        (workspace, {"app.py": candidate_source, "verify.py": old.VERIFY_SOURCE}),
+    ):
+        if directory.is_symlink() or not directory.is_dir():
+            raise TransitionError("Invalid fixture sandbox directory")
+        if directory.name not in ("fixture_repo", "candidate_workspace"):
+            raise TransitionError("Unexpected sandbox directory")
+        # Verify the exact bytes before granting access; refuse symlinks and
+        # nonregular files. Pinning and Git cleanliness are checked by caller.
+        for name, source in expected.items():
+            item = directory / name
+            if item.is_symlink() or not item.is_file() or item.read_bytes() != source.encode("utf-8"):
+                raise TransitionError("Sandbox input does not match approved fixture")
+        # Directory needs search permission for Docker's unprivileged process.
+        os.chmod(directory, 0o755)
+        for name in expected:
+            item = directory / name
+            fd = os.open(item, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+            try:
+                if not stat.S_ISREG(os.fstat(fd).st_mode):
+                    raise TransitionError("Sandbox input is not regular file")
+                os.fchmod(fd, 0o644)
+            finally:
+                os.close(fd)
+
+
 def verify_candidate(run_id: str, *, base: Path, sandbox: Callable[[Path], dict[str, Any]]) -> dict[str, Any]:
     prompt, ctx = trusted_context(run_id, base=base)
     ps = bridge.paths(run_id, base)
@@ -437,6 +472,7 @@ def verify_candidate(run_id: str, *, base: Path, sandbox: Callable[[Path], dict[
     before = old.git(["rev-parse", "HEAD"], ps["repo"])
     if before != ctx["fixture_commit"] or old.git(["status", "--porcelain"], ps["repo"]):
         raise TransitionError("Original fixture not immutable")
+    prepare_sandbox_readonly_inputs(ps["repo"], workspace, candidate_source=patch["source"])
     baseline = sandbox(ps["repo"])
     fixed = sandbox(workspace)
     unchanged = (old.git(["rev-parse", "HEAD"], ps["repo"]) == before
