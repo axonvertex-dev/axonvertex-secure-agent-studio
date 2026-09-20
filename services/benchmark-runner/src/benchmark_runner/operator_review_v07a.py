@@ -131,7 +131,24 @@ def project(run_id: str, *, queue_db: Path = worker.BASE / "jobs.sqlite3",
         response["artifacts"].append({key: a[key] for key in (
             "artifact_id", "artifact_type", "producer_task_id", "content_sha256", "created_at")})
 
-    review = payloads.get("SecurityReview")
+    first_review = payloads.get("SecurityReview")
+    retry_review = payloads.get("SecurityReviewRetry")
+    if retry_review is not None and (first_review is None or first_review.get("accepted") is not False):
+        raise TransitionError("Versioned review must preserve rejected first attempt")
+    if retry_review is not None and (not any(a["artifact_type"] == "SecurityReviewRetry"
+            and a["artifact_id"] == f"{run_id}:foundation-review-retry-1" for a in artifacts)):
+        raise TransitionError("Unexpected retry review identity")
+    review = retry_review if retry_review is not None else first_review
+    response["security_review_history"] = []
+    for kind in ("SecurityReview", "SecurityReviewRetry"):
+        previous = payloads.get(kind)
+        if previous is not None:
+            response["security_review_history"].append({
+                "artifact_type": kind, "accepted_by_validator": previous.get("accepted"),
+                "validation_errors": previous.get("validation_errors"),
+                "content_sha256": next(a["content_sha256"] for a in artifacts
+                                       if a["artifact_type"] == kind),
+            })
     if review is not None:
         report = review.get("review")
         if not isinstance(report, dict) and not (report is None and review.get("accepted") is False):
@@ -159,6 +176,10 @@ def project(run_id: str, *, queue_db: Path = worker.BASE / "jobs.sqlite3",
             source.splitlines(keepends=True), fromfile="a/app.py", tofile="b/app.py"))
         if fixture.sha(delta) != change.get("diff_sha256"):
             raise TransitionError("Candidate diff identity mismatch")
+        accepted_id = (f"{run_id}:foundation-review-retry-1" if retry_review is not None
+                       else f"{run_id}:foundation-review")
+        if review is None or review.get("accepted") is not True or change.get("review_artifact_id") != accepted_id:
+            raise TransitionError("Candidate does not bind to the accepted review attempt")
         response["candidate_change"] = {k: change.get(k) for k in (
             "source_sha256", "diff_sha256", "fixture_commit", "review_artifact_id",
             "evidence_ids", "node", "model")}

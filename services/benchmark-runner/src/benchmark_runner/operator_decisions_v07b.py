@@ -76,13 +76,19 @@ def _eligible(run_id: str, *, expected_candidate_sha256: str,
     if not any(o["kind"] == "DISPATCH_VERIFICATION" and o["status"] == "DONE"
                for o in projection["outbox"]):
         raise TransitionError("Verification dispatch is not complete")
+    accepted_id = candidate["review_artifact_id"]
+    accepted_review = next((a for a in projection["artifacts"]
+                            if a["artifact_id"] == accepted_id and
+                            a["artifact_type"] in ("SecurityReview", "SecurityReviewRetry")), None)
+    if accepted_review is None:
+        raise TransitionError("Approved candidate review attempt missing")
     return {
         "run_id": run_id, "scope": review.SCOPE,
         "candidate_sha256": candidate["source_sha256"],
         "diff_sha256": candidate["diff_sha256"],
         "fixture_commit": candidate["fixture_commit"],
         "verification_artifact_sha256": expected_verification_sha256,
-        "review_artifact_sha256": artifact_by_type["SecurityReview"]["content_sha256"],
+        "review_artifact_sha256": accepted_review["content_sha256"],
         "approval_boundary": remediation.APPROVAL_PENDING,
     }
 

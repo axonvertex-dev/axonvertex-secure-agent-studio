@@ -48,6 +48,27 @@ def artifact(snap: dict[str, Any], kind: str) -> dict[str, Any]:
     return matches[0]
 
 
+def accepted_review(snap: dict[str, Any], run_id: str) -> dict[str, Any]:
+    """Choose only an accepted and hash-verified review; retain rejected provenance.
+
+    A retry never rewrites the original :foundation-review receipt. A normal
+    successful first review remains byte-for-byte compatible with v05C.
+    """
+    first = artifact(snap, "SecurityReview")
+    retried = [a for a in snap["artifacts"] if a["artifact_type"] == "SecurityReviewRetry"]
+    if not retried:
+        if first["payload"].get("accepted") is not True:
+            raise TransitionError("No accepted Foundation Sec review")
+        return first
+    if len(retried) != 1 or first["payload"].get("accepted") is not False:
+        raise TransitionError("Conflicting review provenance")
+    second = artifact(snap, "SecurityReviewRetry")
+    if (second["artifact_id"] != f"{run_id}:foundation-review-retry-1"
+            or second["payload"].get("accepted") is not True):
+        raise TransitionError("Accepted versioned review required")
+    return second
+
+
 def trusted_context(run_id: str, *, base: Path) -> tuple[str, dict[str, Any]]:
     """Reconstruct patch prompt using verified Git, NOT arbitrary Gemma output."""
     ps = bridge.paths(run_id, base)
@@ -59,7 +80,7 @@ def trusted_context(run_id: str, *, base: Path) -> tuple[str, dict[str, Any]]:
                               CANDIDATE_READY, "WAITING_FOR_VERIFICATION", APPROVAL_PENDING,
                               REMEDIATION_REJECTED, VERIFICATION_REJECTED):
         raise TransitionError("Accepted Foundation Sec review required")
-    review = artifact(snap, "SecurityReview")
+    review = accepted_review(snap, run_id)
     previous = artifact(snap, "GemmaResumeOutput")
     ids = [e["evidence_id"] for e in manifest["source_evidence"]]
     rp = review["payload"]
@@ -112,9 +133,8 @@ class RemediationRuntime(review_worker.ReviewRuntime):
                 return self.snapshot(run_id)
             if state["status"] != review_worker.REVIEW_COMPLETED:
                 raise TransitionError("Independent review must be accepted")
-            accepted = self.db.execute("SELECT payload_json FROM artifacts WHERE artifact_id=? AND run_id=?",
-                                       (f"{run_id}:foundation-review", run_id)).fetchone()
-            if not accepted or json.loads(accepted["payload_json"])["accepted"] is not True:
+            accepted = accepted_review(self.snapshot(run_id), run_id)
+            if accepted["payload"]["accepted"] is not True:
                 raise TransitionError("Accepted review artifact missing")
             self.db.execute("INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?)",
                             (remediation, run_id, "RemediationAgent/Gemma", "Propose narrow source fix",
@@ -218,7 +238,7 @@ class RemediationRuntime(review_worker.ReviewRuntime):
             claimed = json.loads(job["payload_json"])
             if accepted and payload is not None:
                 if (claimed["prompt_sha256"] != payload["prompt_sha256"] or
-                        payload["review_artifact_id"] != f"{run_id}:foundation-review"):
+                        payload["review_artifact_id"] != accepted_review(self.snapshot(run_id), run_id)["artifact_id"]):
                     raise TransitionError("Candidate context changed")
                 task_payload = payload
             else:
@@ -494,6 +514,10 @@ def advance(queue: worker.Queue, run_id: str, *, base: Path = RUN_BASE,
     if job["status"] in (APPROVAL_PENDING, REMEDIATION_REJECTED, VERIFICATION_REJECTED,
                          review_worker.REVIEW_QUARANTINED, "NEEDS_OPERATOR_RECOVERY"):
         return {"run_id": run_id, "phase": job["phase"], "status": job["status"]}
+    if job["phase"] == "REVIEW_RETRY_PENDING":
+        from benchmark_runner import review_recovery_v07c3 as retry
+        return retry.advance_retry(queue, run_id, base=base, locks=locks,
+                                   review_provider_factory=review_provider_factory)
     if job["phase"] in ("PREPARE", "WAITING_FOR_SCOUT", "READY_TO_RESUME", "GEMMA_RESUMED", review_worker.REVIEW_PENDING):
         return review_worker.advance(queue, run_id, base=base, locks=locks,
                                      provider_factory=provider_factory,
