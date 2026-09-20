@@ -1,0 +1,10 @@
+.vscode/**
+.git/**
+node_modules/.cache/**
+src/**
+**/*.map
+**/*.test.js
+**/*.test.js.map
+**/*.ts
+eslint.config.mjs
+package-lock.json

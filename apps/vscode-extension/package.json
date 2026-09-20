@@ -1,0 +1,180 @@
+{
+  "name": "agent-studio-coding-agent",
+  "publisher": "axonvertex",
+  "displayName": "AXONVERTEX Agent Studio",
+  "description": "Coding Agent plus a separate read-only Secure Agent Studio operator workbench.",
+  "version": "0.3.0",
+  "engines": {
+    "vscode": "^1.134.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:agentStudio.codingAgent",
+    "onCommand:agentStudio.configureModel",
+    "onCommand:agentStudio.setApiKey",
+    "onCommand:agentStudio.clearApiKey",
+    "onCommand:agentStudio.testModelConnection",
+    "onCommand:agentStudio.openModelSettings",
+    "onView:agentStudio.operatorWorkbench",
+    "onCommand:agentStudio.operator.refresh"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "agentStudio.askCodingAgent",
+        "title": "Agent Studio: Ask Coding Agent"
+      },
+      {
+        "command": "agentStudio.askSelectedCode",
+        "title": "Agent Studio: Ask About Selected Code"
+      },
+      {
+        "command": "agentStudio.inspectRepository",
+        "title": "Agent Studio: Repository Agent"
+      },
+      {
+        "command": "agentStudio.configureModel",
+        "title": "Agent Studio: Configure Model"
+      },
+      {
+        "command": "agentStudio.setApiKey",
+        "title": "Agent Studio: Set API Key"
+      },
+      {
+        "command": "agentStudio.clearApiKey",
+        "title": "Agent Studio: Clear API Key"
+      },
+      {
+        "command": "agentStudio.testModelConnection",
+        "title": "Agent Studio: Test Model Connection"
+      },
+      {
+        "command": "agentStudio.openModelSettings",
+        "title": "Agent Studio: Open Model Settings"
+      },
+      {
+        "command": "agentStudio.operator.refresh",
+        "title": "Agent Studio: Refresh Operator Evidence"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "agentStudio",
+          "title": "Agent Studio",
+          "icon": "media/agent-studio.svg"
+        }
+      ]
+    },
+    "views": {
+      "agentStudio": [
+        {
+          "id": "agentStudio.codingAgent",
+          "name": "Coding Agent",
+          "type": "webview"
+        },
+        {
+          "id": "agentStudio.operatorWorkbench",
+          "name": "Operator Workbench (Read-only)",
+          "type": "webview"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Agent Studio Coding Agent",
+      "properties": {
+        "agentStudio.model.baseUrl": {
+          "type": "string",
+          "default": "http://100.82.103.57:18190/v1",
+          "markdownDescription": "OpenAI-compatible API base URL used by Agent Studio. Examples: `http://localhost:8000/v1`, llama.cpp, vLLM, SGLang, or another compatible service.",
+          "scope": "window"
+        },
+        "agentStudio.model.name": {
+          "type": "string",
+          "default": "gemma4-31b-q4",
+          "markdownDescription": "Model identifier sent to the configured model endpoint.",
+          "scope": "window"
+        },
+        "agentStudio.model.temperature": {
+          "type": "number",
+          "default": 0.1,
+          "minimum": 0,
+          "maximum": 2,
+          "markdownDescription": "Sampling temperature used for Coding Agent model requests.",
+          "scope": "window"
+        },
+        "agentStudio.model.maxTokens": {
+          "type": "number",
+          "default": 2048,
+          "minimum": 128,
+          "maximum": 65536,
+          "markdownDescription": "Maximum number of output tokens requested from the model for each turn.",
+          "scope": "window"
+        },
+        "agentStudio.model.timeoutSeconds": {
+          "type": "number",
+          "default": 600,
+          "minimum": 10,
+          "maximum": 3600,
+          "markdownDescription": "Maximum duration in seconds for one model request.",
+          "scope": "window"
+        },
+        "agentStudio.agent.maxTurns": {
+          "type": "number",
+          "default": 16,
+          "minimum": 1,
+          "maximum": 64,
+          "markdownDescription": "Maximum number of autonomous reasoning/tool turns allowed for one Coding Agent task.",
+          "scope": "window"
+        },
+        "agentStudio.operator.repositoryRoot": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Absolute path to the Secure Agent Studio monorepo on the Remote SSH (Node A) extension host. Leave empty when the remote VS Code workspace root is the monorepo. Read-only Operator Workbench only.",
+          "scope": "machine-overridable"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^13.0.9",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "24.x",
+    "@types/sanitize-html": "^2.16.1",
+    "@types/vscode": "^1.134.0",
+    "@vscode/test-cli": "^0.0.15",
+    "@vscode/test-electron": "^3.0.0",
+    "@vscode/vsce": "^3.9.2",
+    "eslint": "^10.5.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.61.1"
+  },
+  "overrides": {
+    "diff": "^8.0.4",
+    "serialize-javascript": "^7.0.6"
+  },
+  "dependencies": {
+    "markdown-it": "^13.0.2",
+    "sanitize-html": "^2.17.7"
+  },
+  "extensionKind": [
+    "workspace"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axonvertex-dev/axonvertex-secure-agent-studio.git",
+    "directory": "apps/vscode-extension"
+  }
+}
