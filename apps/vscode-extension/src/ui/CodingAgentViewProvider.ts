@@ -1,3 +1,4 @@
+import { probeAgentConnection } from '../model/AgentConnectionProbe';
 import * as vscode from 'vscode';
 import * as crypto from 'crypto';
 
@@ -905,149 +906,39 @@ export class CodingAgentViewProvider
 	 */
 
 	private async refreshModelStatus():
-		Promise<void> {
+	Promise<void> {
+	let model = 'Not configured';
 
-		let model =
-			'Not configured';
+	try {
+		const config =
+			await this.modelConfigService.getConfig();
 
+		model = config.model;
 
-		try {
+		this.post({
+			type: 'modelStatus',
+			model,
+			connected: undefined
+		});
 
-			const config =
-				await this.modelConfigService
-					.getConfig();
+		const result =
+			await probeAgentConnection(config);
 
-
-			model =
-				config.model;
-
-
-			this.post({
-				type:
-					'modelStatus',
-
-				model,
-
-				connected:
-					undefined
-			});
-
-
-			const controller =
-				new AbortController();
-
-
-			const timeout =
-				setTimeout(
-					() => {
-
-						controller.abort();
-
-					},
-					5000
-				);
-
-
-			try {
-
-				const headers:
-					Record<string, string> =
-				{
-					'Accept':
-						'application/json'
-				};
-
-
-				if (
-					config.apiKey
-				) {
-
-					headers.Authorization =
-						`Bearer ${config.apiKey}`;
-				}
-
-
-				const response =
-					await fetch(
-						`${config.baseUrl}/models`,
-						{
-							method:
-								'GET',
-
-							headers,
-
-							signal:
-								controller.signal
-						}
-					);
-
-
-				if (
-					!response.ok
-				) {
-
-					throw new Error(
-						`HTTP ${response.status}`
-					);
-				}
-
-
-				const body =
-					await response.json() as
-						{
-							data?: Array<{
-								id?: string;
-							}>;
-						};
-
-
-				const models =
-					body.data ??
-					[];
-
-
-				const connected =
-					models.length === 0 ||
-					models.some(
-						item =>
-							item.id ===
-								config.model
-					);
-
-
-				this.post({
-					type:
-						'modelStatus',
-
-					model:
-						config.model,
-
-					connected
-				});
-
-			} finally {
-
-				clearTimeout(
-					timeout
-				);
-			}
-
-		} catch {
-
-			this.post({
-				type:
-					'modelStatus',
-
-				model,
-
-				connected:
-					false
-			});
-		}
+		this.post({
+			type: 'modelStatus',
+			model,
+			connected: result.state === 'CONNECTED'
+		});
+	} catch {
+		this.post({
+			type: 'modelStatus',
+			model,
+			connected: false
+		});
 	}
+}
 
-
-	private post(
+private post(
 		message: unknown
 	): void {
 

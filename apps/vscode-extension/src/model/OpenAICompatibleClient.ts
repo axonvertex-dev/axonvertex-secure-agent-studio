@@ -178,12 +178,9 @@ export async function createChatCompletion(
 			!response.ok
 		) {
 
-			const body =
-				await response.text();
-
 
 			throw new Error(
-				`Model HTTP ${response.status}: ${body}`
+				`Model HTTP ${response.status}`
 			);
 		}
 

@@ -3,7 +3,7 @@
   "publisher": "axonvertex",
   "displayName": "AXONVERTEX Agent Studio",
   "description": "Coding Agent plus a separate read-only Secure Agent Studio operator workbench.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "engines": {
     "vscode": "^1.134.0"
   },
@@ -19,7 +19,8 @@
     "onCommand:agentStudio.testModelConnection",
     "onCommand:agentStudio.openModelSettings",
     "onView:agentStudio.operatorWorkbench",
-    "onCommand:agentStudio.operator.refresh"
+    "onCommand:agentStudio.operator.refresh",
+    "onCommand:agentStudio.manageAgentInference"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -59,6 +60,10 @@
       {
         "command": "agentStudio.operator.refresh",
         "title": "Agent Studio: Refresh Operator Evidence"
+      },
+      {
+        "command": "agentStudio.manageAgentInference",
+        "title": "Agent Studio: Manage Agent Inference"
       }
     ],
     "viewsContainers": {
@@ -89,15 +94,15 @@
       "properties": {
         "agentStudio.model.baseUrl": {
           "type": "string",
-          "default": "http://100.82.103.57:18190/v1",
-          "markdownDescription": "OpenAI-compatible API base URL used by Agent Studio. Examples: `http://localhost:8000/v1`, llama.cpp, vLLM, SGLang, or another compatible service.",
-          "scope": "window"
+          "markdownDescription": "Deprecated and ignored by the Coding Agent. Configure the Coding Agent endpoint under agentStudio.agents.coding.baseUrl.",
+          "scope": "window",
+          "deprecationMessage": "Use agentStudio.agents.coding.baseUrl instead."
         },
         "agentStudio.model.name": {
           "type": "string",
-          "default": "gemma4-31b-q4",
-          "markdownDescription": "Model identifier sent to the configured model endpoint.",
-          "scope": "window"
+          "markdownDescription": "Deprecated and ignored by the Coding Agent. Configure the Coding Agent model under agentStudio.agents.coding.model.",
+          "scope": "window",
+          "deprecationMessage": "Use agentStudio.agents.coding.model instead."
         },
         "agentStudio.model.temperature": {
           "type": "number",
@@ -136,6 +141,51 @@
           "default": "",
           "markdownDescription": "Absolute path to the Secure Agent Studio monorepo on the Remote SSH (Node A) extension host. Leave empty when the remote VS Code workspace root is the monorepo. Read-only Operator Workbench only.",
           "scope": "machine-overridable"
+        },
+        "agentStudio.agents.coding.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable the Coding Agent inference profile."
+        },
+        "agentStudio.agents.coding.baseUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:11433/v1",
+          "description": "OpenAI-compatible API base URL for the Coding Agent. API keys are stored separately in VS Code SecretStorage."
+        },
+        "agentStudio.agents.coding.model": {
+          "type": "string",
+          "default": "gemma-4-12b-it-qat",
+          "description": "Model identifier exposed by the Coding Agent inference endpoint."
+        },
+        "agentStudio.agents.detector.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable the Detector Agent inference profile."
+        },
+        "agentStudio.agents.detector.baseUrl": {
+          "type": "string",
+          "default": "http://100.99.149.21:18184/v1",
+          "description": "OpenAI-compatible API base URL for the Detector Agent. API keys are stored separately in VS Code SecretStorage."
+        },
+        "agentStudio.agents.detector.model": {
+          "type": "string",
+          "default": "antares-1b",
+          "description": "Model identifier exposed by the Detector Agent inference endpoint."
+        },
+        "agentStudio.agents.evidence.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable the Evidence Agent inference profile."
+        },
+        "agentStudio.agents.evidence.baseUrl": {
+          "type": "string",
+          "default": "http://100.76.212.84:18183/v1",
+          "description": "OpenAI-compatible API base URL for the Evidence Agent. API keys are stored separately in VS Code SecretStorage."
+        },
+        "agentStudio.agents.evidence.model": {
+          "type": "string",
+          "default": "foundation-sec-8b-reasoning",
+          "description": "Model identifier exposed by the Evidence Agent inference endpoint."
         }
       }
     }

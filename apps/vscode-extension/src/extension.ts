@@ -1,3 +1,5 @@
+import { probeAgentConnection } from './model/AgentConnectionProbe';
+import { registerAgentInferenceCommands } from './model/AgentInferenceCommands';
 import * as vscode from 'vscode';
 import { OperatorWorkbenchViewProvider } from './operator/OperatorWorkbenchViewProvider';
 
@@ -184,127 +186,31 @@ async function runWithProgress(
  */
 
 async function testModelConnection(
-	modelConfigService: ModelConfigService
+    modelConfigService: ModelConfigService
 ): Promise<void> {
+    const config =
+        await modelConfigService.getConfig();
 
-	const config =
-		await modelConfigService
-			.getConfig();
+    const result =
+        await probeAgentConnection(config);
 
+    const suffix =
+        result.httpStatus === undefined
+            ? ''
+            : ` (HTTP ${result.httpStatus})`;
 
-	const controller =
-		new AbortController();
+    const message =
+        `Coding Agent: ${result.state}${suffix}`;
 
-
-	const timeout =
-		setTimeout(
-			() => {
-
-				controller.abort();
-
-			},
-			15_000
-		);
-
-
-	try {
-
-		const headers:
-			Record<string, string> =
-		{
-			'Accept':
-				'application/json'
-		};
-
-
-		if (
-			config.apiKey
-		) {
-
-			headers.Authorization =
-				`Bearer ${config.apiKey}`;
-		}
-
-
-		const response =
-			await fetch(
-				`${config.baseUrl}/models`,
-				{
-					method:
-						'GET',
-
-					headers,
-
-					signal:
-						controller.signal
-				}
-			);
-
-
-		if (!response.ok) {
-
-			const body =
-				await response.text();
-
-
-			throw new Error(
-				`HTTP ${response.status}: ${body}`
-			);
-		}
-
-
-		const body =
-			await response.json() as
-				{
-					data?: Array<{
-						id?: string;
-					}>;
-				};
-
-
-		const models =
-			body.data ??
-			[];
-
-
-		const configuredModelFound =
-			models.some(
-				item =>
-					item.id ===
-					config.model
-			);
-
-
-		const suffix =
-			configuredModelFound
-				? ` Model "${config.model}" is available.`
-				: models.length > 0
-					? ` Endpoint responded, but model "${config.model}" was not listed.`
-					: ' Endpoint responded successfully.';
-
-
-		vscode.window.showInformationMessage(
-			`Agent Studio connected to ${config.baseUrl}.${suffix}`
-		);
-
-	} catch (error) {
-
-		const message =
-			error instanceof Error
-				? error.message
-				: String(error);
-
-
-		throw new Error(
-			`Model connection failed: ${message}`
-		);
-
-	} finally {
-
-		clearTimeout(
-			timeout
-		);
-	}
+    if (result.state === 'CONNECTED') {
+        vscode.window.showInformationMessage(
+            message
+        );
+    } else {
+        vscode.window.showWarningMessage(
+            message
+        );
+    }
 }
 
 
@@ -926,7 +832,7 @@ Analyze the supplied code and respond to the instruction.
 								current.model,
 
 							placeHolder:
-								'gemma4-31b-q4',
+								'gemma-4-12b-it-qat',
 
 							ignoreFocusOut:
 								true
@@ -962,7 +868,7 @@ Analyze the supplied code and respond to the instruction.
 
 
 					await configuration.update(
-						'model.baseUrl',
+						'agents.coding.baseUrl',
 						baseUrl
 							.trim()
 							.replace(
@@ -974,7 +880,7 @@ Analyze the supplied code and respond to the instruction.
 
 
 					await configuration.update(
-						'model.name',
+						'agents.coding.model',
 						model.trim(),
 						vscode.ConfigurationTarget.Global
 					);
@@ -1157,7 +1063,7 @@ Analyze the supplied code and respond to the instruction.
 				await vscode.commands
 					.executeCommand(
 						'workbench.action.openSettings',
-						'agentStudio.model'
+						'agentStudio.agents.coding'
 					);
 			}
 		);
@@ -1168,6 +1074,10 @@ Analyze the supplied code and respond to the instruction.
 	 * REGISTER DISPOSABLES
 	 * ========================================================
 	 */
+
+context.subscriptions.push(
+	registerAgentInferenceCommands(context.secrets)
+);
 
 	context.subscriptions.push(
 		askCodingAgent,

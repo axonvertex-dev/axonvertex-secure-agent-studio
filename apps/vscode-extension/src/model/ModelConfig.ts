@@ -1,171 +1,73 @@
-import * as vscode from 'vscode';
+import type * as vscode from 'vscode';
 
-
-const CONFIG_SECTION =
-	'agentStudio';
-
-
-const API_KEY_SECRET =
-	'agentStudio.model.apiKey';
-
+import {
+	AgentInferenceConfigService
+} from './AgentInferenceConfig';
 
 export interface ModelRuntimeConfig {
-
 	baseUrl: string;
-
 	model: string;
-
 	apiKey?: string;
-
 	temperature: number;
-
 	maxTokens: number;
-
 	timeoutSeconds: number;
-
 	maxAgentTurns: number;
 }
 
-
+/**
+ * Compatibility interface for the existing Coding Agent.
+ *
+ * The authoritative Coding Agent connection now lives at:
+ *
+ * agentStudio.agents.coding.*
+ *
+ * Other agent profiles are accessed through
+ * AgentInferenceConfigService directly.
+ */
 export class ModelConfigService {
-
+	private readonly inference:
+		AgentInferenceConfigService;
 
 	public constructor(
-		private readonly secrets:
-			vscode.SecretStorage
-	) {}
-
+		secrets: vscode.SecretStorage
+	) {
+		this.inference =
+			new AgentInferenceConfigService(
+				secrets
+			);
+	}
 
 	public async getConfig():
 		Promise<ModelRuntimeConfig> {
-
-		const configuration =
-			vscode.workspace.getConfiguration(
-				CONFIG_SECTION
-			);
-
-
-		const baseUrl =
-			configuration.get<string>(
-				'model.baseUrl',
-				'http://127.0.0.1:18190/v1'
-			)
-				.trim()
-				.replace(
-					/\/+$/,
-					''
-				);
-
-
-		const model =
-			configuration.get<string>(
-				'model.name',
-				'gemma4-31b-q4'
-			)
-				.trim();
-
-
-		const temperature =
-			configuration.get<number>(
-				'model.temperature',
-				0.1
-			);
-
-
-		const maxTokens =
-			configuration.get<number>(
-				'model.maxTokens',
-				2048
-			);
-
-
-		const timeoutSeconds =
-			configuration.get<number>(
-				'model.timeoutSeconds',
-				600
-			);
-
-
-		const maxAgentTurns =
-			configuration.get<number>(
-				'agent.maxTurns',
-				16
-			);
-
-
-		const apiKey =
-			await this.secrets.get(
-				API_KEY_SECRET
-			);
-
-
-		if (!baseUrl) {
-
-			throw new Error(
-				'Agent Studio model endpoint is not configured.'
-			);
-		}
-
-
-		if (!model) {
-
-			throw new Error(
-				'Agent Studio model name is not configured.'
-			);
-		}
-
-
-		return {
-			baseUrl,
-			model,
-			apiKey,
-			temperature,
-			maxTokens,
-			timeoutSeconds,
-			maxAgentTurns
-		};
+		return this.inference.getConfig(
+			'coding'
+		);
 	}
-
 
 	public async setApiKey(
 		apiKey: string
 	): Promise<void> {
-
-		const value =
-			apiKey.trim();
-
-
-		if (!value) {
-
-			throw new Error(
-				'API key cannot be empty.'
-			);
-		}
-
-
-		await this.secrets.store(
-			API_KEY_SECRET,
-			value
+		await this.inference.setApiKey(
+			'coding',
+			apiKey
 		);
 	}
-
 
 	public async clearApiKey():
 		Promise<void> {
-
-		await this.secrets.delete(
-			API_KEY_SECRET
+		await this.inference.clearApiKey(
+			'coding'
 		);
 	}
 
-
 	public async hasApiKey():
 		Promise<boolean> {
+		const profile =
+			await this.inference
+				.getPublicProfile(
+					'coding'
+				);
 
-		return Boolean(
-			await this.secrets.get(
-				API_KEY_SECRET
-			)
-		);
+		return profile.hasApiKey;
 	}
 }
