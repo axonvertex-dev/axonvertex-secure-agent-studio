@@ -1,6 +1,7 @@
 import * as crypto from 'node:crypto';
 import * as vscode from 'vscode';
 import { ReadOnlyRunAdapter } from './ReadOnlyRunAdapter';
+import { operatorWorkbenchHtml } from './OperatorWorkbenchHtml';
 
 interface ViewMessage {
   type: 'ready' | 'refresh' | 'load';
@@ -71,94 +72,8 @@ export class OperatorWorkbenchViewProvider implements vscode.WebviewViewProvider
     await this.view?.webview.postMessage({ type: 'error', message: msg.slice(0, 600) });
   }
 
-  private html(webview: vscode.Webview): string {
+  private html(_webview: vscode.Webview): string {
     const nonce = crypto.randomBytes(20).toString('hex');
-    const csp = `default-src 'none'; img-src data:; style-src 'nonce-${nonce}'; script-src 'nonce-${nonce}'; connect-src 'none'; frame-src 'none'; form-action 'none'; base-uri 'none'`;
-    return `<!doctype html>
-<html lang="en"><head><meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="${csp}">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Operator Workbench</title>
-<style nonce="${nonce}">
-:root { color-scheme: light dark; }
-body { padding: 12px; font: var(--vscode-font-size) var(--vscode-font-family); color: var(--vscode-foreground); }
-header { display: grid; gap: 10px; margin-bottom: 14px; }
-header strong { font-size: 1.15em; }
-select,button { font: inherit; padding: 7px; color: var(--vscode-input-foreground); background: var(--vscode-input-background); border: 1px solid var(--vscode-input-border,var(--vscode-panel-border)); border-radius: 4px; }
-button { cursor: pointer; color: var(--vscode-button-foreground); background: var(--vscode-button-background); }
-fieldset { border: 1px solid var(--vscode-panel-border); margin: 0 0 10px; border-radius: 6px; min-width: 0; }
-legend { font-weight: bold; padding: 0 5px; }
-pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.9em; background: var(--vscode-textCodeBlock-background); padding: 8px; max-height: 340px; overflow-y: auto; }
-small { color: var(--vscode-descriptionForeground); }
-#status { padding: 7px 0; overflow-wrap: anywhere; }
-.diff { max-height: 420px; }
-</style></head><body>
-<header><strong>AXONVERTEX · Operator Workbench</strong>
-<small>Read-only · Node A · 0.7D1. No approvals, tool calls, model calls or source edits.</small>
-<label for="runs">Durable investigation</label><select id="runs" aria-label="Durable investigation"></select>
-<button id="refresh" type="button">Refresh evidence</button><div id="status" role="status" aria-live="polite">Loading…</div></header>
-<main id="sections"></main>
-<script nonce="${nonce}">
-(() => {
-'use strict';
-const vscode = acquireVsCodeApi();
-const select = document.getElementById('runs');
-const status = document.getElementById('status');
-const sections = document.getElementById('sections');
-const refresh = document.getElementById('refresh');
-function dump(label, data, css = '') {
-  const fieldset = document.createElement('fieldset');
-  const legend = document.createElement('legend'); legend.textContent = label;
-  const pre = document.createElement('pre'); pre.className = css;
-  pre.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
-  fieldset.append(legend, pre); sections.append(fieldset);
-}
-function show(run) {
-  sections.replaceChildren();
-  status.textContent = run.runId + ' · ' + (run.jobStatus || 'state not available');
-  dump('Security review versions / quarantine', run.reviewVersions);
-  dump('Accepted Foundation Sec reasoning', run.acceptedSecurityReview);
-  dump('Candidate identity', {
-    sourceSha256: run.candidate.sourceSha256,
-    diffSha256: run.candidate.diffSha256,
-    fixtureCommit: run.candidate.fixtureCommit,
-    reviewArtifactId: run.candidate.reviewArtifactId,
-  });
-  dump('Candidate diff', run.candidate.unifiedDiff || '(not available from read-only review)', 'diff');
-  dump('Sandbox verification', run.verification);
-  dump('Recorded operator decision', run.decision);
-  dump('Application result and Docker postcheck', {
-    state: run.application.state,
-    receiptSha256: run.application.receiptSha256,
-    candidateSha256: run.application.candidateSha256,
-    gitCommitCreated: run.application.gitCommitCreated,
-    dockerCandidate: run.application.dockerCandidate,
-  });
-  dump('Application event sequence', run.application.events);
-  dump('Evidence artifact references', run.artifacts);
-}
-window.addEventListener('message', (event) => {
-  const message = event.data;
-  if (!message || typeof message !== 'object') return;
-  if (message.type === 'runs' && Array.isArray(message.runs)) {
-    select.replaceChildren();
-    for (const entry of message.runs) {
-      if (!entry || typeof entry.runId !== 'string') continue;
-      const option = document.createElement('option');
-      option.value = entry.runId; option.textContent = entry.runId;
-      select.append(option);
-    }
-    select.value = message.selected || '';
-    status.textContent = message.runs.length ? 'Reading investigation…' : 'No local durable runs found.';
-  } else if (message.type === 'run' && message.run) { show(message.run); }
-  else if (message.type === 'error') { status.textContent = 'Read-only inspection failed: ' + String(message.message); }
-});
-select.addEventListener('change', () => {
-  if (select.value) { status.textContent = 'Reading investigation…'; vscode.postMessage({ type: 'load', runId: select.value }); }
-});
-refresh.addEventListener('click', () => { status.textContent = 'Refreshing…'; vscode.postMessage({ type: 'refresh' }); });
-vscode.postMessage({ type: 'ready' });
-})();
-</script></body></html>`;
+    return operatorWorkbenchHtml(nonce);
   }
 }
