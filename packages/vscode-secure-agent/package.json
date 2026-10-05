@@ -1,0 +1,143 @@
+{
+  "name": "axonvertex-secure-agent",
+  "displayName": "AXONVERTEX Secure Agent",
+  "description": "Governed sovereign multi-agent secure coding workflow for VS Code.",
+  "version": "0.1.0",
+  "publisher": "axonvertex-dev",
+  "license": "Apache-2.0",
+  "private": true,
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Other",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "agent",
+    "security",
+    "sovereign-ai",
+    "code-review",
+    "axonvertex"
+  ],
+  "activationEvents": [
+    "onView:axonvertexSecureAgent.dashboard",
+    "onCommand:axonvertexSecureAgent.openDashboard",
+    "onCommand:axonvertexSecureAgent.runCurrent",
+    "onCommand:axonvertexSecureAgent.configureSecrets",
+    "onCommand:axonvertexSecureAgent.clearSecrets"
+  ],
+  "main": "./dist/extension.js",
+  "scripts": {
+    "sync:runtime-config": "node scripts/sync-runtime-config.mjs",
+    "build": "npm run sync:runtime-config && esbuild src/extension.ts --bundle --platform=node --format=cjs --target=node20 --external:vscode --outfile=dist/extension.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test test/*.test.ts",
+    "check": "npm run typecheck && npm run test && npm run build",
+    "package:vsix": "npm run check && vsce package --no-dependencies --out ../../dist/axonvertex-secure-agent-studio-0.1.0.vsix"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.95.0",
+    "@vscode/vsce": "^3.2.2",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "axonvertexSecureAgent.openDashboard",
+        "title": "AXONVERTEX: Open Secure Agent"
+      },
+      {
+        "command": "axonvertexSecureAgent.runCurrent",
+        "title": "AXONVERTEX: Run Governed Secure Analysis"
+      },
+      {
+        "command": "axonvertexSecureAgent.configureSecrets",
+        "title": "AXONVERTEX: Configure Lab Secrets"
+      },
+      {
+        "command": "axonvertexSecureAgent.clearSecrets",
+        "title": "AXONVERTEX: Clear Lab Secrets"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "axonvertexSecureAgent",
+          "title": "AXONVERTEX Secure Agent",
+          "icon": "media/axonvertex.svg"
+        }
+      ]
+    },
+    "views": {
+      "axonvertexSecureAgent": [
+        {
+          "type": "webview",
+          "id": "axonvertexSecureAgent.dashboard",
+          "name": "Governed Pipeline"
+        }
+      ]
+    },
+    "menus": {
+      "editor/context": [
+        {
+          "command": "axonvertexSecureAgent.runCurrent",
+          "when": "editorTextFocus",
+          "group": "navigation@90"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "AXONVERTEX Secure Agent",
+      "properties": {
+        "axonvertexSecureAgent.registryUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:18781",
+          "description": "AXONVERTEX Agent Registry URL. Do not place credentials in this setting."
+        },
+        "axonvertexSecureAgent.gemmaUrl": {
+          "type": "string",
+          "default": "http://100.82.103.57:11433/v1",
+          "description": "Node A SGLang endpoint."
+        },
+        "axonvertexSecureAgent.antaresUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:18184/v1",
+          "description": "Node B llama.cpp endpoint."
+        },
+        "axonvertexSecureAgent.foundationUrl": {
+          "type": "string",
+          "default": "http://100.76.212.84:18183/v1",
+          "description": "Node C Foundation Sec llama.cpp endpoint."
+        },
+        "axonvertexSecureAgent.maxSourceChars": {
+          "type": "number",
+          "default": 60000,
+          "minimum": 1000,
+          "maximum": 250000,
+          "description": "Maximum source characters sent into one governed pipeline run."
+        },
+        "axonvertexSecureAgent.maxTokensPerStage": {
+          "type": "number",
+          "default": 1400,
+          "minimum": 128,
+          "maximum": 8192,
+          "description": "Maximum generated tokens for each model stage."
+        },
+        "axonvertexSecureAgent.timeoutMs": {
+          "type": "number",
+          "default": 180000,
+          "minimum": 5000,
+          "maximum": 600000,
+          "description": "Per-stage runtime timeout in milliseconds."
+        }
+      }
+    }
+  },
+  "extensionKind": [
+    "workspace"
+  ]
+}
