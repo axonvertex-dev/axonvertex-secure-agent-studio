@@ -2,7 +2,7 @@
   "name": "axonvertex-secure-agent",
   "displayName": "AXONVERTEX Secure Agent",
   "description": "Governed sovereign multi-agent secure coding workflow for VS Code.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "axonvertex-dev",
   "license": "Apache-2.0",
   "private": true,
@@ -34,7 +34,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "tsx --test test/*.test.ts",
     "check": "npm run typecheck && npm run test && npm run build",
-    "package:vsix": "npm run check && vsce package --no-dependencies --out ../../dist/axonvertex-secure-agent-studio-0.1.0.vsix"
+    "package:vsix": "npm run check && vsce package --no-dependencies --out ../../dist/axonvertex-secure-agent-studio-0.2.0.vsix"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
