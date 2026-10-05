@@ -1,0 +1,4 @@
+.env.runtime-adapter
+node_modules/
+dist/
+coverage/

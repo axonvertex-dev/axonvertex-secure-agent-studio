@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0",
+  "runtimes": {
+    "runtime-gemma-node-a": {
+      "endpointRef": "runtime://node-a:11433",
+      "credentialRef": "secret://node-a/gemma-api-key",
+      "modelId": "gemma-4-12b-it-qat",
+      "engine": "sglang",
+      "baseUrlEnv": "AXV_RUNTIME_GEMMA_NODE_A_URL",
+      "defaultBaseUrl": "http://100.82.103.57:11433/v1",
+      "apiKeyEnv": "AXV_RUNTIME_GEMMA_NODE_A_API_KEY"
+    },
+    "runtime-antares-node-b": {
+      "endpointRef": "runtime://node-b:18184",
+      "credentialRef": "secret://node-b/antares-api-key",
+      "modelId": "antares-1b",
+      "engine": "llama.cpp",
+      "baseUrlEnv": "AXV_RUNTIME_ANTARES_NODE_B_URL",
+      "defaultBaseUrl": "http://127.0.0.1:18184/v1",
+      "apiKeyEnv": "AXV_RUNTIME_ANTARES_NODE_B_API_KEY"
+    },
+    "runtime-foundation-node-c": {
+      "endpointRef": "runtime://node-c:18183",
+      "credentialRef": "secret://node-c/foundation-api-key",
+      "modelId": "foundation-sec-8b-reasoning",
+      "engine": "llama.cpp",
+      "baseUrlEnv": "AXV_RUNTIME_FOUNDATION_NODE_C_URL",
+      "defaultBaseUrl": "http://100.76.212.84:18183/v1",
+      "apiKeyEnv": "AXV_RUNTIME_FOUNDATION_NODE_C_API_KEY"
+    }
+  }
+}
