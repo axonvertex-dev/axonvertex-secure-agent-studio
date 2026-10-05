@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "system": "axonvertex-secure-agent-system",
+  "checkpoint": "agent-system-checkpoint-1",
+
+  "model_runtimes": [
+    {
+      "id": "runtime-gemma-node-a",
+      "node": "node-a",
+      "engine": "sglang",
+      "model": "gemma-4-12b-it-qat",
+      "endpoint_ref": "runtime://node-a:11433",
+      "credential_ref": "secret://node-a/gemma-api-key",
+      "status": "AVAILABLE"
+    },
+    {
+      "id": "runtime-antares-node-b",
+      "node": "node-b",
+      "engine": "llama.cpp",
+      "model": "antares-1b",
+      "endpoint_ref": "runtime://node-b:18184",
+      "credential_ref": "secret://node-b/antares-api-key",
+      "status": "AVAILABLE"
+    },
+    {
+      "id": "runtime-foundation-node-c",
+      "node": "node-c",
+      "engine": "llama.cpp",
+      "model": "foundation-sec-8b-reasoning",
+      "endpoint_ref": "runtime://node-c:18183",
+      "credential_ref": "secret://node-c/foundation-api-key",
+      "status": "AVAILABLE"
+    }
+  ],
+
+  "agents": [
+    {
+      "id": "security-scout",
+      "runtime": "runtime-antares-node-b",
+      "purpose": [
+        "evidence_extraction",
+        "candidate_finding_generation"
+      ],
+      "prohibited": [
+        "final_security_adjudication",
+        "patch_approval"
+      ]
+    },
+    {
+      "id": "coding-investigator",
+      "runtime": "runtime-gemma-node-a",
+      "purpose": [
+        "code_reasoning",
+        "vulnerability_analysis",
+        "remediation_design",
+        "patch_generation"
+      ]
+    },
+    {
+      "id": "security-critic",
+      "runtime": "runtime-foundation-node-c",
+      "purpose": [
+        "independent_security_review",
+        "cwe_review",
+        "evidence_challenge",
+        "unsupported_claim_detection"
+      ],
+      "prohibited": [
+        "self_approval",
+        "final_execution_authorization"
+      ]
+    },
+    {
+      "id": "final-evidence-synthesizer",
+      "runtime": "runtime-gemma-node-a",
+      "purpose": [
+        "evidence_synthesis",
+        "final_assessment_generation"
+      ]
+    }
+  ],
+
+  "execution_policy": {
+    "pipeline": [
+      "security-scout",
+      "coding-investigator",
+      "security-critic",
+      "final-evidence-synthesizer",
+      "deterministic-quality-gate"
+    ],
+
+    "final_security_acceptance_requires": [
+      "security_critic_completed",
+      "final_evidence_synthesizer_completed",
+      "quality_gate_pass"
+    ],
+
+    "fail_closed": true,
+
+    "forbidden": [
+      "agent_self_approval",
+      "model_self_activation",
+      "security_approval_without_quality_gate"
+    ]
+  }
+}
