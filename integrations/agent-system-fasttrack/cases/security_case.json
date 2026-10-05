@@ -1,0 +1,40 @@
+{
+  "name": "payment-maintenance-command-execution",
+  "evidence": {
+    "A": {
+      "file": "services/api/routes/admin.py",
+      "content": "@router.post('/admin/run-maintenance')\nasync def run_maintenance(request):\n    body = await request.json()\n    command = body.get('command')\n    enqueue_job({'type':'maintenance','command':command,'requested_by':request.headers.get('X-User')})"
+    },
+    "B": {
+      "file": "services/worker/maintenance.py",
+      "content": "command = job.get('command','')\nsubprocess.run(command, shell=True, capture_output=True, text=True, timeout=30)"
+    },
+    "C": {
+      "file": "services/api/middleware/auth.py",
+      "content": "token=request.headers.get('Authorization')\nif not token: return unauthorized()\nidentity=await validate_token(token)\nrequest.state.identity=identity\nreturn await call_next(request)"
+    },
+    "D": {
+      "file": "services/api/main.py",
+      "content": "app.include_router(admin.router)"
+    },
+    "E": {
+      "file": "services/webhook/sender.py",
+      "content": "requests.post(url, json=payload, timeout=5, allow_redirects=False)"
+    },
+    "F": {
+      "file": "services/report/templates/merchant.html",
+      "content": "<h1>{{ merchant_name }}</h1><div>{{ description }}</div>"
+    },
+    "G": {
+      "file": "deployment-notes",
+      "content": "Worker runs as uid 10001; filesystem read-only except /tmp; no Kubernetes API token; env contains REDIS_URL and LOG_LEVEL only; no evidence of cloud credentials."
+    }
+  },
+  "unverified_hypotheses": [
+    "admin endpoint may lack authorization",
+    "worker may reach Internet",
+    "template may be XSS",
+    "webhook may allow SSRF",
+    "command execution may lead to cluster compromise"
+  ]
+}

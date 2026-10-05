@@ -1,0 +1,4 @@
+.env.agent-system
+results/
+scripts/__pycache__/
+*.pyc

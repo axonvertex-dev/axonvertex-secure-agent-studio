@@ -1,0 +1,38 @@
+{
+  "version": "fasttrack-2026-10-05",
+  "agents": [
+    {
+      "id": "security-scout",
+      "runtime": "antares-node-b",
+      "model": "antares-1b",
+      "purpose": [
+        "evidence_extraction",
+        "candidate_findings"
+      ],
+      "prohibited": [
+        "final_security_adjudication",
+        "patch_approval"
+      ]
+    },
+    {
+      "id": "coding-investigator",
+      "runtime": "gemma-node-a",
+      "model": "gemma-4-12b-it-qat",
+      "purpose": [
+        "code_reasoning",
+        "vulnerability_analysis",
+        "patch_generation"
+      ]
+    },
+    {
+      "id": "security-reasoner",
+      "runtime": "foundation-sec-node-c",
+      "model": "foundation-sec-8b-reasoning",
+      "purpose": [
+        "finding_validation",
+        "cwe_classification",
+        "evidence_adjudication"
+      ]
+    }
+  ]
+}
